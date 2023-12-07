@@ -1544,7 +1544,7 @@ class MjvGeomWrapper(object):
     
     @property
     def texrepeat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.texrepeat, dtype=np.float, count=(2)), (2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.texrepeat, dtype=float, count=(2)), (2, ))
         arr.setflags(write=False)
         return arr
     
@@ -1555,7 +1555,7 @@ class MjvGeomWrapper(object):
     
     @property
     def size(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.size, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.size, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1566,7 +1566,7 @@ class MjvGeomWrapper(object):
     
     @property
     def pos(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1577,7 +1577,7 @@ class MjvGeomWrapper(object):
     
     @property
     def mat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat, dtype=np.float, count=(9)), (9, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat, dtype=float, count=(9)), (9, ))
         arr.setflags(write=False)
         return arr
     
@@ -1588,7 +1588,7 @@ class MjvGeomWrapper(object):
     
     @property
     def rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.rgba, dtype=np.float, count=(4)), (4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.rgba, dtype=float, count=(4)), (4, ))
         arr.setflags(write=False)
         return arr
     
@@ -1678,7 +1678,7 @@ class MjvLightWrapper(object):
     
     @property
     def pos(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1689,7 +1689,7 @@ class MjvLightWrapper(object):
     
     @property
     def dir(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dir, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dir, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1700,7 +1700,7 @@ class MjvLightWrapper(object):
     
     @property
     def attenuation(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.attenuation, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.attenuation, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1727,7 +1727,7 @@ class MjvLightWrapper(object):
     
     @property
     def ambient(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.ambient, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.ambient, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1738,7 +1738,7 @@ class MjvLightWrapper(object):
     
     @property
     def diffuse(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.diffuse, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.diffuse, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1749,7 +1749,7 @@ class MjvLightWrapper(object):
     
     @property
     def specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.specular, dtype=np.float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.specular, dtype=float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4401,7 +4401,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_rgba, dtype=np.float, count=(self.ngeom*4)), (self.ngeom, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_rgba, dtype=float, count=(self.ngeom*4)), (self.ngeom, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -4500,7 +4500,7 @@ class MjModelWrapper(object):
     
     @property
     def site_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_rgba, dtype=np.float, count=(self.nsite*4)), (self.nsite, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_rgba, dtype=float, count=(self.nsite*4)), (self.nsite, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -4742,7 +4742,7 @@ class MjModelWrapper(object):
     
     @property
     def light_attenuation(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_attenuation, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_attenuation, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4753,7 +4753,7 @@ class MjModelWrapper(object):
     
     @property
     def light_cutoff(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_cutoff, dtype=np.float, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_cutoff, dtype=float, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4764,7 +4764,7 @@ class MjModelWrapper(object):
     
     @property
     def light_exponent(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_exponent, dtype=np.float, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_exponent, dtype=float, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4775,7 +4775,7 @@ class MjModelWrapper(object):
     
     @property
     def light_ambient(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_ambient, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_ambient, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4786,7 +4786,7 @@ class MjModelWrapper(object):
     
     @property
     def light_diffuse(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_diffuse, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_diffuse, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4797,7 +4797,7 @@ class MjModelWrapper(object):
     
     @property
     def light_specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_specular, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_specular, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4863,7 +4863,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_vert(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vert, dtype=np.float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vert, dtype=float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4874,7 +4874,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_normal(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_normal, dtype=np.float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_normal, dtype=float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4951,7 +4951,7 @@ class MjModelWrapper(object):
     
     @property
     def hfield_data(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_data, dtype=np.float, count=(self.nhfielddata*1)), (self.nhfielddata, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_data, dtype=float, count=(self.nhfielddata*1)), (self.nhfielddata, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5039,7 +5039,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_texrepeat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texrepeat, dtype=np.float, count=(self.nmat*2)), (self.nmat, 2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texrepeat, dtype=float, count=(self.nmat*2)), (self.nmat, 2, ))
         arr.setflags(write=False)
         return arr
     
@@ -5050,7 +5050,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_emission(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_emission, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_emission, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5061,7 +5061,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_specular, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_specular, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5072,7 +5072,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_shininess(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_shininess, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_shininess, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5083,7 +5083,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_reflectance(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_reflectance, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_reflectance, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5094,7 +5094,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_rgba, dtype=np.float, count=(self.nmat*4)), (self.nmat, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_rgba, dtype=float, count=(self.nmat*4)), (self.nmat, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -5501,7 +5501,7 @@ class MjModelWrapper(object):
     
     @property
     def tendon_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_rgba, dtype=np.float, count=(self.ntendon*4)), (self.ntendon, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_rgba, dtype=float, count=(self.ntendon*4)), (self.ntendon, 4, ))
         arr.setflags(write=False)
         return arr
     
