@@ -23,7 +23,7 @@ class RNNDynamicsModel(Serializable):
                  batch_size=500,
                  learning_rate=0.001,
                  normalize_input=True,
-                 optimizer=tf.train.AdamOptimizer,
+                 optimizer=tf.keras.optimizers.Adam,
                  valid_split_ratio=0.2,
                  rolling_average_persitency=0.99,
                  backprop_steps=50,
