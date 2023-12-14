@@ -116,6 +116,9 @@ def create_mlp(output_dim,
         elif batch_normalization == 'testing':
             x = tf.layers.batch_normalization(x, training=False)
 
+
+        
+
         x = tf.layers.dense(x,
                             hidden_size,
                             name='hidden_%d' % idx,

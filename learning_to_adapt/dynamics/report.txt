@@ -1,0 +1,29 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 1 files
+Detected 0 issues that require attention
+--------------------------------------------------------------------------------
+================================================================================
+Detailed log follows:
+
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'meta_mlp_dynamics.py'
+ outputting to 'meta_mlp_dynamics_tf2.py'
+--------------------------------------------------------------------------------
+
+36:27: INFO: Renamed 'tf.keras.optimizers.Adam' to 'tf.keras.optimizers.legacy.Adam'
+89:29: INFO: Renamed 'tf.train.GradientDescentOptimizer' to 'tf.compat.v1.train.GradientDescentOptimizer'
+90:34: INFO: Renamed 'tf.train.GradientDescentOptimizer' to 'tf.compat.v1.train.GradientDescentOptimizer'
+107:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+107:71: INFO: Renamed 'tf.AUTO_REUSE' to 'tf.compat.v1.AUTO_REUSE'
+122:17: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+122:72: INFO: Renamed 'tf.AUTO_REUSE' to 'tf.compat.v1.AUTO_REUSE'
+143:13: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+149:21: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+179:15: INFO: Renamed 'tf.get_default_session' to 'tf.compat.v1.get_default_session'
+298:19: INFO: Renamed 'tf.get_default_session' to 'tf.compat.v1.get_default_session'
+343:15: INFO: Renamed 'tf.get_default_session' to 'tf.compat.v1.get_default_session'
+426:32: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+--------------------------------------------------------------------------------
+

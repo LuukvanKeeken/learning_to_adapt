@@ -75,7 +75,7 @@ class Layer(Serializable):
         Returns:
             (list) : list of values for parameters
         """
-        param_values = tf.compat.v1.get_default_session().run(self._params)
+        param_values = tf.get_default_session().run(self._params)
         return param_values
 
     def set_params(self, policy_params):
@@ -91,14 +91,14 @@ class Layer(Serializable):
         if self._assign_ops is None:
             assign_ops, assign_phs = [], []
             for var in self.get_params().values():
-                assign_placeholder = tf.compat.v1.placeholder(dtype=var.dtype)
-                assign_op = tf.compat.v1.assign(var, assign_placeholder)
+                assign_placeholder = tf.placeholder(dtype=var.dtype)
+                assign_op = tf.assign(var, assign_placeholder)
                 assign_ops.append(assign_op)
                 assign_phs.append(assign_placeholder)
             self._assign_ops = assign_ops
             self._assign_phs = assign_phs
         feed_dict = dict(zip(self._assign_phs, policy_params.values()))
-        tf.compat.v1.get_default_session().run(self._assign_ops, feed_dict=feed_dict)
+        tf.get_default_session().run(self._assign_ops, feed_dict=feed_dict)
 
     def __getstate__(self):
         state = {
@@ -109,7 +109,7 @@ class Layer(Serializable):
 
     def __setstate__(self, state):
         # Serializable.__setstate__(self, state['init_args'])
-        tf.compat.v1.get_default_session().run(tf.compat.v1.variables_initializer(self.get_params().values()))
+        tf.get_default_session().run(tf.variables_initializer(self.get_params().values()))
         self.set_params(state['network_params'])
 
 
@@ -143,7 +143,7 @@ class MLP(Layer):
         """
         Builds computational graph for policy
         """
-        with tf.compat.v1.variable_scope(self.name, reuse=tf.compat.v1.AUTO_REUSE):
+        with tf.variable_scope(self.name, reuse=tf.AUTO_REUSE):
 
             if self._params is None:
                 # build the actual policy network
@@ -157,8 +157,8 @@ class MLP(Layer):
                                                              )
 
                 # save the policy's trainable variables in dicts
-                current_scope = tf.compat.v1.get_default_graph().get_name_scope()
-                trainable_vars = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, scope=current_scope)
+                current_scope = tf.get_default_graph().get_name_scope()
+                trainable_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=current_scope)
                 self._params = OrderedDict([(remove_scope_from_name(var.name, current_scope), var)
                                             for var in trainable_vars])
 
@@ -201,7 +201,7 @@ class RNN(Layer):
         """
         Builds computational graph for policy
         """
-        with tf.compat.v1.variable_scope(self.name, reuse=tf.compat.v1.AUTO_REUSE):
+        with tf.variable_scope(self.name, reuse=tf.AUTO_REUSE):
             # build the actual policy network
             args = create_rnn(name='rnn',
                               cell_type=self._cell_type,
@@ -216,6 +216,6 @@ class RNN(Layer):
 
             self.input_var, self.state_var, self.output_var, self.next_state_var, self.cell = args
 
-        current_scope = tf.compat.v1.get_default_graph().get_name_scope()
-        trainable_policy_vars = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, scope=current_scope)
+        current_scope = tf.get_default_graph().get_name_scope()
+        trainable_policy_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=current_scope)
         self._params = OrderedDict([(remove_scope_from_name(var.name, current_scope), var) for var in trainable_policy_vars])

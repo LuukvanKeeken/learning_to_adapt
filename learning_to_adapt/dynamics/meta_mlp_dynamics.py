@@ -65,12 +65,12 @@ class MetaMLPDynamicsModel(Serializable):
         output_nonlinearity = self._activations[output_nonlinearity]
 
         """ ------------------ Pre-Update Graph + Adaptation ----------------------- """
-        with tf.variable_scope(name):
+        with tf.compat.v1.variable_scope(name):
             # Placeholders
-            self.obs_ph = tf.placeholder(tf.float32, shape=(None, obs_space_dims))
-            self.act_ph = tf.placeholder(tf.float32, shape=(None, action_space_dims))
-            self.delta_ph = tf.placeholder(tf.float32, shape=(None, obs_space_dims))
-
+            self.obs_ph = tf.Variable(initial_value=tf.zeros((1, obs_space_dims)), dtype=tf.float32)
+            self.act_ph = tf.Variable(initial_value=tf.zeros((1, action_space_dims)), dtype=tf.float32)
+            self.delta_ph = tf.Variable(initial_value=tf.zeros((1, obs_space_dims)), dtype=tf.float32)
+            
             # Concatenate action and observation --> NN input
             self.nn_input = tf.concat([self.obs_ph, self.act_ph], axis=1)
 
