@@ -1155,7 +1155,7 @@ class MjrContextWrapper(object):
     
     @property
     def texture(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.texture, dtype=int, count=(100)), (100, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.texture, dtype=np.int, count=(100)), (100, ))
         arr.setflags(write=False)
         return arr
     
@@ -1166,7 +1166,7 @@ class MjrContextWrapper(object):
     
     @property
     def textureType(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.textureType, dtype=int, count=(100)), (100, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.textureType, dtype=np.int, count=(100)), (100, ))
         arr.setflags(write=False)
         return arr
     
@@ -1273,7 +1273,7 @@ class MjrContextWrapper(object):
     
     @property
     def charWidth(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.charWidth, dtype=int, count=(127)), (127, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.charWidth, dtype=np.int, count=(127)), (127, ))
         arr.setflags(write=False)
         return arr
     
@@ -1284,7 +1284,7 @@ class MjrContextWrapper(object):
     
     @property
     def charWidthBig(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.charWidthBig, dtype=int, count=(127)), (127, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.charWidthBig, dtype=np.int, count=(127)), (127, ))
         arr.setflags(write=False)
         return arr
     
@@ -1544,7 +1544,7 @@ class MjvGeomWrapper(object):
     
     @property
     def texrepeat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.texrepeat, dtype=float, count=(2)), (2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.texrepeat, dtype=np.float, count=(2)), (2, ))
         arr.setflags(write=False)
         return arr
     
@@ -1555,7 +1555,7 @@ class MjvGeomWrapper(object):
     
     @property
     def size(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.size, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.size, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1566,7 +1566,7 @@ class MjvGeomWrapper(object):
     
     @property
     def pos(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1577,7 +1577,7 @@ class MjvGeomWrapper(object):
     
     @property
     def mat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat, dtype=float, count=(9)), (9, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat, dtype=np.float, count=(9)), (9, ))
         arr.setflags(write=False)
         return arr
     
@@ -1588,7 +1588,7 @@ class MjvGeomWrapper(object):
     
     @property
     def rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.rgba, dtype=float, count=(4)), (4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.rgba, dtype=np.float, count=(4)), (4, ))
         arr.setflags(write=False)
         return arr
     
@@ -1678,7 +1678,7 @@ class MjvLightWrapper(object):
     
     @property
     def pos(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pos, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1689,7 +1689,7 @@ class MjvLightWrapper(object):
     
     @property
     def dir(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dir, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dir, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1700,7 +1700,7 @@ class MjvLightWrapper(object):
     
     @property
     def attenuation(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.attenuation, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.attenuation, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1727,7 +1727,7 @@ class MjvLightWrapper(object):
     
     @property
     def ambient(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.ambient, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.ambient, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1738,7 +1738,7 @@ class MjvLightWrapper(object):
     
     @property
     def diffuse(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.diffuse, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.diffuse, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -1749,7 +1749,7 @@ class MjvLightWrapper(object):
     
     @property
     def specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.specular, dtype=float, count=(3)), (3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.specular, dtype=np.float, count=(3)), (3, ))
         arr.setflags(write=False)
         return arr
     
@@ -2229,7 +2229,7 @@ class MjDataWrapper(object):
     
     @property
     def nwarning(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.nwarning, dtype=int, count=(8)), (8, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.nwarning, dtype=np.int, count=(8)), (8, ))
         arr.setflags(write=False)
         return arr
     
@@ -2240,7 +2240,7 @@ class MjDataWrapper(object):
     
     @property
     def warning_info(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.warning_info, dtype=int, count=(8)), (8, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.warning_info, dtype=np.int, count=(8)), (8, ))
         arr.setflags(write=False)
         return arr
     
@@ -2677,7 +2677,7 @@ class MjDataWrapper(object):
     
     @property
     def ten_wrapadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.ten_wrapadr, dtype=int, count=(self._size_src.ntendon*1)), (self._size_src.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.ten_wrapadr, dtype=np.int, count=(self._size_src.ntendon*1)), (self._size_src.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2688,7 +2688,7 @@ class MjDataWrapper(object):
     
     @property
     def ten_wrapnum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.ten_wrapnum, dtype=int, count=(self._size_src.ntendon*1)), (self._size_src.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.ten_wrapnum, dtype=np.int, count=(self._size_src.ntendon*1)), (self._size_src.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2721,7 +2721,7 @@ class MjDataWrapper(object):
     
     @property
     def wrap_obj(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_obj, dtype=int, count=(self._size_src.nwrap*2)), (self._size_src.nwrap, 2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_obj, dtype=np.int, count=(self._size_src.nwrap*2)), (self._size_src.nwrap, 2, ))
         arr.setflags(write=False)
         return arr
     
@@ -2820,7 +2820,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_type, dtype=int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_type, dtype=np.int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2831,7 +2831,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_id(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_id, dtype=int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_id, dtype=np.int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2842,7 +2842,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_rownnz(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rownnz, dtype=int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rownnz, dtype=np.int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2853,7 +2853,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_rowadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rowadr, dtype=int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rowadr, dtype=np.int, count=(self._size_src.njmax*1)), (self._size_src.njmax, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2864,7 +2864,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_colind(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_colind, dtype=int, count=(self._size_src.njmax*self._size_src.nv)), (self._size_src.njmax, self._size_src.nv, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_colind, dtype=np.int, count=(self._size_src.njmax*self._size_src.nv)), (self._size_src.njmax, self._size_src.nv, ))
         arr.setflags(write=False)
         return arr
     
@@ -2875,7 +2875,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_rownnz_T(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rownnz_T, dtype=int, count=(self._size_src.nv*1)), (self._size_src.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rownnz_T, dtype=np.int, count=(self._size_src.nv*1)), (self._size_src.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2886,7 +2886,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_rowadr_T(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rowadr_T, dtype=int, count=(self._size_src.nv*1)), (self._size_src.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_rowadr_T, dtype=np.int, count=(self._size_src.nv*1)), (self._size_src.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -2897,7 +2897,7 @@ class MjDataWrapper(object):
     
     @property
     def efc_colind_T(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_colind_T, dtype=int, count=(self._size_src.nv*self._size_src.njmax)), (self._size_src.nv, self._size_src.njmax, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.efc_colind_T, dtype=np.int, count=(self._size_src.nv*self._size_src.njmax)), (self._size_src.nv, self._size_src.njmax, ))
         arr.setflags(write=False)
         return arr
     
@@ -3730,7 +3730,7 @@ class MjModelWrapper(object):
     
     @property
     def body_parentid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_parentid, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_parentid, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3741,7 +3741,7 @@ class MjModelWrapper(object):
     
     @property
     def body_rootid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_rootid, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_rootid, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3752,7 +3752,7 @@ class MjModelWrapper(object):
     
     @property
     def body_weldid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_weldid, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_weldid, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3763,7 +3763,7 @@ class MjModelWrapper(object):
     
     @property
     def body_mocapid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_mocapid, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_mocapid, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3774,7 +3774,7 @@ class MjModelWrapper(object):
     
     @property
     def body_jntnum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_jntnum, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_jntnum, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3785,7 +3785,7 @@ class MjModelWrapper(object):
     
     @property
     def body_jntadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_jntadr, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_jntadr, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3796,7 +3796,7 @@ class MjModelWrapper(object):
     
     @property
     def body_dofnum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_dofnum, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_dofnum, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3807,7 +3807,7 @@ class MjModelWrapper(object):
     
     @property
     def body_dofadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_dofadr, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_dofadr, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3818,7 +3818,7 @@ class MjModelWrapper(object):
     
     @property
     def body_geomnum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_geomnum, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_geomnum, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3829,7 +3829,7 @@ class MjModelWrapper(object):
     
     @property
     def body_geomadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.body_geomadr, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.body_geomadr, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3928,7 +3928,7 @@ class MjModelWrapper(object):
     
     @property
     def jnt_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_type, dtype=int, count=(self.njnt*1)), (self.njnt, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_type, dtype=np.int, count=(self.njnt*1)), (self.njnt, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3939,7 +3939,7 @@ class MjModelWrapper(object):
     
     @property
     def jnt_qposadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_qposadr, dtype=int, count=(self.njnt*1)), (self.njnt, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_qposadr, dtype=np.int, count=(self.njnt*1)), (self.njnt, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3950,7 +3950,7 @@ class MjModelWrapper(object):
     
     @property
     def jnt_dofadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_dofadr, dtype=int, count=(self.njnt*1)), (self.njnt, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_dofadr, dtype=np.int, count=(self.njnt*1)), (self.njnt, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -3961,7 +3961,7 @@ class MjModelWrapper(object):
     
     @property
     def jnt_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_bodyid, dtype=int, count=(self.njnt*1)), (self.njnt, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.jnt_bodyid, dtype=np.int, count=(self.njnt*1)), (self.njnt, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4071,7 +4071,7 @@ class MjModelWrapper(object):
     
     @property
     def dof_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_bodyid, dtype=int, count=(self.nv*1)), (self.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_bodyid, dtype=np.int, count=(self.nv*1)), (self.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4082,7 +4082,7 @@ class MjModelWrapper(object):
     
     @property
     def dof_jntid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_jntid, dtype=int, count=(self.nv*1)), (self.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_jntid, dtype=np.int, count=(self.nv*1)), (self.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4093,7 +4093,7 @@ class MjModelWrapper(object):
     
     @property
     def dof_parentid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_parentid, dtype=int, count=(self.nv*1)), (self.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_parentid, dtype=np.int, count=(self.nv*1)), (self.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4104,7 +4104,7 @@ class MjModelWrapper(object):
     
     @property
     def dof_Madr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_Madr, dtype=int, count=(self.nv*1)), (self.nv, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.dof_Madr, dtype=np.int, count=(self.nv*1)), (self.nv, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4192,7 +4192,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_type, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_type, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4203,7 +4203,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_contype(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_contype, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_contype, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4214,7 +4214,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_conaffinity(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_conaffinity, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_conaffinity, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4225,7 +4225,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_condim(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_condim, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_condim, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4236,7 +4236,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_bodyid, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_bodyid, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4247,7 +4247,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_dataid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_dataid, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_dataid, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4258,7 +4258,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_matid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_matid, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_matid, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4269,7 +4269,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_group(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_group, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_group, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4401,7 +4401,7 @@ class MjModelWrapper(object):
     
     @property
     def geom_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_rgba, dtype=float, count=(self.ngeom*4)), (self.ngeom, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.geom_rgba, dtype=np.float, count=(self.ngeom*4)), (self.ngeom, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -4412,7 +4412,7 @@ class MjModelWrapper(object):
     
     @property
     def site_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_type, dtype=int, count=(self.nsite*1)), (self.nsite, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_type, dtype=np.int, count=(self.nsite*1)), (self.nsite, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4423,7 +4423,7 @@ class MjModelWrapper(object):
     
     @property
     def site_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_bodyid, dtype=int, count=(self.nsite*1)), (self.nsite, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_bodyid, dtype=np.int, count=(self.nsite*1)), (self.nsite, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4434,7 +4434,7 @@ class MjModelWrapper(object):
     
     @property
     def site_matid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_matid, dtype=int, count=(self.nsite*1)), (self.nsite, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_matid, dtype=np.int, count=(self.nsite*1)), (self.nsite, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4445,7 +4445,7 @@ class MjModelWrapper(object):
     
     @property
     def site_group(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_group, dtype=int, count=(self.nsite*1)), (self.nsite, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_group, dtype=np.int, count=(self.nsite*1)), (self.nsite, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4500,7 +4500,7 @@ class MjModelWrapper(object):
     
     @property
     def site_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.site_rgba, dtype=float, count=(self.nsite*4)), (self.nsite, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.site_rgba, dtype=np.float, count=(self.nsite*4)), (self.nsite, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -4511,7 +4511,7 @@ class MjModelWrapper(object):
     
     @property
     def cam_mode(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_mode, dtype=int, count=(self.ncam*1)), (self.ncam, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_mode, dtype=np.int, count=(self.ncam*1)), (self.ncam, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4522,7 +4522,7 @@ class MjModelWrapper(object):
     
     @property
     def cam_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_bodyid, dtype=int, count=(self.ncam*1)), (self.ncam, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_bodyid, dtype=np.int, count=(self.ncam*1)), (self.ncam, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4533,7 +4533,7 @@ class MjModelWrapper(object):
     
     @property
     def cam_targetbodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_targetbodyid, dtype=int, count=(self.ncam*1)), (self.ncam, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.cam_targetbodyid, dtype=np.int, count=(self.ncam*1)), (self.ncam, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4621,7 +4621,7 @@ class MjModelWrapper(object):
     
     @property
     def light_mode(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_mode, dtype=int, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_mode, dtype=np.int, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4632,7 +4632,7 @@ class MjModelWrapper(object):
     
     @property
     def light_bodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_bodyid, dtype=int, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_bodyid, dtype=np.int, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4643,7 +4643,7 @@ class MjModelWrapper(object):
     
     @property
     def light_targetbodyid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_targetbodyid, dtype=int, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_targetbodyid, dtype=np.int, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4742,7 +4742,7 @@ class MjModelWrapper(object):
     
     @property
     def light_attenuation(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_attenuation, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_attenuation, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4753,7 +4753,7 @@ class MjModelWrapper(object):
     
     @property
     def light_cutoff(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_cutoff, dtype=float, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_cutoff, dtype=np.float, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4764,7 +4764,7 @@ class MjModelWrapper(object):
     
     @property
     def light_exponent(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_exponent, dtype=float, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_exponent, dtype=np.float, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4775,7 +4775,7 @@ class MjModelWrapper(object):
     
     @property
     def light_ambient(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_ambient, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_ambient, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4786,7 +4786,7 @@ class MjModelWrapper(object):
     
     @property
     def light_diffuse(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_diffuse, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_diffuse, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4797,7 +4797,7 @@ class MjModelWrapper(object):
     
     @property
     def light_specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.light_specular, dtype=float, count=(self.nlight*3)), (self.nlight, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.light_specular, dtype=np.float, count=(self.nlight*3)), (self.nlight, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4808,7 +4808,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_faceadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_faceadr, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_faceadr, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4819,7 +4819,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_facenum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_facenum, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_facenum, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4830,7 +4830,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_vertadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vertadr, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vertadr, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4841,7 +4841,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_vertnum(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vertnum, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vertnum, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4852,7 +4852,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_graphadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_graphadr, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_graphadr, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4863,7 +4863,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_vert(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vert, dtype=float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_vert, dtype=np.float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4874,7 +4874,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_normal(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_normal, dtype=float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_normal, dtype=np.float, count=(self.nmeshvert*3)), (self.nmeshvert, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4885,7 +4885,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_face(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_face, dtype=int, count=(self.nmeshface*3)), (self.nmeshface, 3, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_face, dtype=np.int, count=(self.nmeshface*3)), (self.nmeshface, 3, ))
         arr.setflags(write=False)
         return arr
     
@@ -4896,7 +4896,7 @@ class MjModelWrapper(object):
     
     @property
     def mesh_graph(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_graph, dtype=int, count=(self.nmeshgraph*1)), (self.nmeshgraph, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mesh_graph, dtype=np.int, count=(self.nmeshgraph*1)), (self.nmeshgraph, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4918,7 +4918,7 @@ class MjModelWrapper(object):
     
     @property
     def hfield_nrow(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_nrow, dtype=int, count=(self.nhfield*1)), (self.nhfield, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_nrow, dtype=np.int, count=(self.nhfield*1)), (self.nhfield, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4929,7 +4929,7 @@ class MjModelWrapper(object):
     
     @property
     def hfield_ncol(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_ncol, dtype=int, count=(self.nhfield*1)), (self.nhfield, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_ncol, dtype=np.int, count=(self.nhfield*1)), (self.nhfield, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4940,7 +4940,7 @@ class MjModelWrapper(object):
     
     @property
     def hfield_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_adr, dtype=int, count=(self.nhfield*1)), (self.nhfield, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_adr, dtype=np.int, count=(self.nhfield*1)), (self.nhfield, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4951,7 +4951,7 @@ class MjModelWrapper(object):
     
     @property
     def hfield_data(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_data, dtype=float, count=(self.nhfielddata*1)), (self.nhfielddata, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.hfield_data, dtype=np.float, count=(self.nhfielddata*1)), (self.nhfielddata, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4962,7 +4962,7 @@ class MjModelWrapper(object):
     
     @property
     def tex_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_type, dtype=int, count=(self.ntex*1)), (self.ntex, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_type, dtype=np.int, count=(self.ntex*1)), (self.ntex, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4973,7 +4973,7 @@ class MjModelWrapper(object):
     
     @property
     def tex_height(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_height, dtype=int, count=(self.ntex*1)), (self.ntex, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_height, dtype=np.int, count=(self.ntex*1)), (self.ntex, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4984,7 +4984,7 @@ class MjModelWrapper(object):
     
     @property
     def tex_width(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_width, dtype=int, count=(self.ntex*1)), (self.ntex, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_width, dtype=np.int, count=(self.ntex*1)), (self.ntex, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -4995,7 +4995,7 @@ class MjModelWrapper(object):
     
     @property
     def tex_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_adr, dtype=int, count=(self.ntex*1)), (self.ntex, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tex_adr, dtype=np.int, count=(self.ntex*1)), (self.ntex, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5017,7 +5017,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_texid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texid, dtype=int, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texid, dtype=np.int, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5039,7 +5039,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_texrepeat(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texrepeat, dtype=float, count=(self.nmat*2)), (self.nmat, 2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_texrepeat, dtype=np.float, count=(self.nmat*2)), (self.nmat, 2, ))
         arr.setflags(write=False)
         return arr
     
@@ -5050,7 +5050,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_emission(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_emission, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_emission, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5061,7 +5061,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_specular(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_specular, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_specular, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5072,7 +5072,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_shininess(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_shininess, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_shininess, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5083,7 +5083,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_reflectance(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_reflectance, dtype=float, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_reflectance, dtype=np.float, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5094,7 +5094,7 @@ class MjModelWrapper(object):
     
     @property
     def mat_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_rgba, dtype=float, count=(self.nmat*4)), (self.nmat, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.mat_rgba, dtype=np.float, count=(self.nmat*4)), (self.nmat, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -5105,7 +5105,7 @@ class MjModelWrapper(object):
     
     @property
     def pair_dim(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_dim, dtype=int, count=(self.npair*1)), (self.npair, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_dim, dtype=np.int, count=(self.npair*1)), (self.npair, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5116,7 +5116,7 @@ class MjModelWrapper(object):
     
     @property
     def pair_geom1(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_geom1, dtype=int, count=(self.npair*1)), (self.npair, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_geom1, dtype=np.int, count=(self.npair*1)), (self.npair, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5127,7 +5127,7 @@ class MjModelWrapper(object):
     
     @property
     def pair_geom2(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_geom2, dtype=int, count=(self.npair*1)), (self.npair, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_geom2, dtype=np.int, count=(self.npair*1)), (self.npair, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5138,7 +5138,7 @@ class MjModelWrapper(object):
     
     @property
     def pair_signature(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_signature, dtype=int, count=(self.npair*1)), (self.npair, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.pair_signature, dtype=np.int, count=(self.npair*1)), (self.npair, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5204,7 +5204,7 @@ class MjModelWrapper(object):
     
     @property
     def exclude_signature(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.exclude_signature, dtype=int, count=(self.nexclude*1)), (self.nexclude, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.exclude_signature, dtype=np.int, count=(self.nexclude*1)), (self.nexclude, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5215,7 +5215,7 @@ class MjModelWrapper(object):
     
     @property
     def eq_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_type, dtype=int, count=(self.neq*1)), (self.neq, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_type, dtype=np.int, count=(self.neq*1)), (self.neq, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5226,7 +5226,7 @@ class MjModelWrapper(object):
     
     @property
     def eq_obj1id(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_obj1id, dtype=int, count=(self.neq*1)), (self.neq, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_obj1id, dtype=np.int, count=(self.neq*1)), (self.neq, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5237,7 +5237,7 @@ class MjModelWrapper(object):
     
     @property
     def eq_obj2id(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_obj2id, dtype=int, count=(self.neq*1)), (self.neq, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.eq_obj2id, dtype=np.int, count=(self.neq*1)), (self.neq, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5292,7 +5292,7 @@ class MjModelWrapper(object):
     
     @property
     def tendon_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_adr, dtype=int, count=(self.ntendon*1)), (self.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_adr, dtype=np.int, count=(self.ntendon*1)), (self.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5303,7 +5303,7 @@ class MjModelWrapper(object):
     
     @property
     def tendon_num(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_num, dtype=int, count=(self.ntendon*1)), (self.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_num, dtype=np.int, count=(self.ntendon*1)), (self.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5314,7 +5314,7 @@ class MjModelWrapper(object):
     
     @property
     def tendon_matid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_matid, dtype=int, count=(self.ntendon*1)), (self.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_matid, dtype=np.int, count=(self.ntendon*1)), (self.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5501,7 +5501,7 @@ class MjModelWrapper(object):
     
     @property
     def tendon_rgba(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_rgba, dtype=float, count=(self.ntendon*4)), (self.ntendon, 4, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.tendon_rgba, dtype=np.float, count=(self.ntendon*4)), (self.ntendon, 4, ))
         arr.setflags(write=False)
         return arr
     
@@ -5512,7 +5512,7 @@ class MjModelWrapper(object):
     
     @property
     def wrap_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_type, dtype=int, count=(self.nwrap*1)), (self.nwrap, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_type, dtype=np.int, count=(self.nwrap*1)), (self.nwrap, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5523,7 +5523,7 @@ class MjModelWrapper(object):
     
     @property
     def wrap_objid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_objid, dtype=int, count=(self.nwrap*1)), (self.nwrap, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.wrap_objid, dtype=np.int, count=(self.nwrap*1)), (self.nwrap, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5545,7 +5545,7 @@ class MjModelWrapper(object):
     
     @property
     def actuator_trntype(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_trntype, dtype=int, count=(self.nu*1)), (self.nu, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_trntype, dtype=np.int, count=(self.nu*1)), (self.nu, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5556,7 +5556,7 @@ class MjModelWrapper(object):
     
     @property
     def actuator_dyntype(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_dyntype, dtype=int, count=(self.nu*1)), (self.nu, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_dyntype, dtype=np.int, count=(self.nu*1)), (self.nu, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5567,7 +5567,7 @@ class MjModelWrapper(object):
     
     @property
     def actuator_gaintype(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_gaintype, dtype=int, count=(self.nu*1)), (self.nu, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_gaintype, dtype=np.int, count=(self.nu*1)), (self.nu, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5578,7 +5578,7 @@ class MjModelWrapper(object):
     
     @property
     def actuator_biastype(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_biastype, dtype=int, count=(self.nu*1)), (self.nu, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_biastype, dtype=np.int, count=(self.nu*1)), (self.nu, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5589,7 +5589,7 @@ class MjModelWrapper(object):
     
     @property
     def actuator_trnid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_trnid, dtype=int, count=(self.nu*2)), (self.nu, 2, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.actuator_trnid, dtype=np.int, count=(self.nu*2)), (self.nu, 2, ))
         arr.setflags(write=False)
         return arr
     
@@ -5743,7 +5743,7 @@ class MjModelWrapper(object):
     
     @property
     def sensor_type(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_type, dtype=int, count=(self.nsensor*1)), (self.nsensor, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_type, dtype=np.int, count=(self.nsensor*1)), (self.nsensor, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5754,7 +5754,7 @@ class MjModelWrapper(object):
     
     @property
     def sensor_objid(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_objid, dtype=int, count=(self.nsensor*1)), (self.nsensor, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_objid, dtype=np.int, count=(self.nsensor*1)), (self.nsensor, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5765,7 +5765,7 @@ class MjModelWrapper(object):
     
     @property
     def sensor_dim(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_dim, dtype=int, count=(self.nsensor*1)), (self.nsensor, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_dim, dtype=np.int, count=(self.nsensor*1)), (self.nsensor, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5776,7 +5776,7 @@ class MjModelWrapper(object):
     
     @property
     def sensor_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_adr, dtype=int, count=(self.nsensor*1)), (self.nsensor, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.sensor_adr, dtype=np.int, count=(self.nsensor*1)), (self.nsensor, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5809,7 +5809,7 @@ class MjModelWrapper(object):
     
     @property
     def numeric_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.numeric_adr, dtype=int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.numeric_adr, dtype=np.int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5820,7 +5820,7 @@ class MjModelWrapper(object):
     
     @property
     def numeric_size(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.numeric_size, dtype=int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.numeric_size, dtype=np.int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5842,7 +5842,7 @@ class MjModelWrapper(object):
     
     @property
     def text_adr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.text_adr, dtype=int, count=(self.ntext*1)), (self.ntext, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.text_adr, dtype=np.int, count=(self.ntext*1)), (self.ntext, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5901,7 +5901,7 @@ class MjModelWrapper(object):
     
     @property
     def name_bodyadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_bodyadr, dtype=int, count=(self.nbody*1)), (self.nbody, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_bodyadr, dtype=np.int, count=(self.nbody*1)), (self.nbody, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5912,7 +5912,7 @@ class MjModelWrapper(object):
     
     @property
     def name_jntadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_jntadr, dtype=int, count=(self.njnt*1)), (self.njnt, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_jntadr, dtype=np.int, count=(self.njnt*1)), (self.njnt, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5923,7 +5923,7 @@ class MjModelWrapper(object):
     
     @property
     def name_geomadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_geomadr, dtype=int, count=(self.ngeom*1)), (self.ngeom, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_geomadr, dtype=np.int, count=(self.ngeom*1)), (self.ngeom, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5934,7 +5934,7 @@ class MjModelWrapper(object):
     
     @property
     def name_siteadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_siteadr, dtype=int, count=(self.nsite*1)), (self.nsite, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_siteadr, dtype=np.int, count=(self.nsite*1)), (self.nsite, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5945,7 +5945,7 @@ class MjModelWrapper(object):
     
     @property
     def name_camadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_camadr, dtype=int, count=(self.ncam*1)), (self.ncam, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_camadr, dtype=np.int, count=(self.ncam*1)), (self.ncam, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5956,7 +5956,7 @@ class MjModelWrapper(object):
     
     @property
     def name_lightadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_lightadr, dtype=int, count=(self.nlight*1)), (self.nlight, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_lightadr, dtype=np.int, count=(self.nlight*1)), (self.nlight, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5967,7 +5967,7 @@ class MjModelWrapper(object):
     
     @property
     def name_meshadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_meshadr, dtype=int, count=(self.nmesh*1)), (self.nmesh, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_meshadr, dtype=np.int, count=(self.nmesh*1)), (self.nmesh, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5978,7 +5978,7 @@ class MjModelWrapper(object):
     
     @property
     def name_hfieldadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_hfieldadr, dtype=int, count=(self.nhfield*1)), (self.nhfield, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_hfieldadr, dtype=np.int, count=(self.nhfield*1)), (self.nhfield, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -5989,7 +5989,7 @@ class MjModelWrapper(object):
     
     @property
     def name_texadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_texadr, dtype=int, count=(self.ntex*1)), (self.ntex, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_texadr, dtype=np.int, count=(self.ntex*1)), (self.ntex, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6000,7 +6000,7 @@ class MjModelWrapper(object):
     
     @property
     def name_matadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_matadr, dtype=int, count=(self.nmat*1)), (self.nmat, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_matadr, dtype=np.int, count=(self.nmat*1)), (self.nmat, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6011,7 +6011,7 @@ class MjModelWrapper(object):
     
     @property
     def name_eqadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_eqadr, dtype=int, count=(self.neq*1)), (self.neq, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_eqadr, dtype=np.int, count=(self.neq*1)), (self.neq, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6022,7 +6022,7 @@ class MjModelWrapper(object):
     
     @property
     def name_tendonadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_tendonadr, dtype=int, count=(self.ntendon*1)), (self.ntendon, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_tendonadr, dtype=np.int, count=(self.ntendon*1)), (self.ntendon, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6033,7 +6033,7 @@ class MjModelWrapper(object):
     
     @property
     def name_actuatoradr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_actuatoradr, dtype=int, count=(self.nu*1)), (self.nu, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_actuatoradr, dtype=np.int, count=(self.nu*1)), (self.nu, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6044,7 +6044,7 @@ class MjModelWrapper(object):
     
     @property
     def name_sensoradr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_sensoradr, dtype=int, count=(self.nsensor*1)), (self.nsensor, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_sensoradr, dtype=np.int, count=(self.nsensor*1)), (self.nsensor, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6055,7 +6055,7 @@ class MjModelWrapper(object):
     
     @property
     def name_numericadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_numericadr, dtype=int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_numericadr, dtype=np.int, count=(self.nnumeric*1)), (self.nnumeric, 1, ))
         arr.setflags(write=False)
         return arr
     
@@ -6066,7 +6066,7 @@ class MjModelWrapper(object):
     
     @property
     def name_textadr(self):
-        arr = np.reshape(np.fromiter(self._wrapped.contents.name_textadr, dtype=int, count=(self.ntext*1)), (self.ntext, 1, ))
+        arr = np.reshape(np.fromiter(self._wrapped.contents.name_textadr, dtype=np.int, count=(self.ntext*1)), (self.ntext, 1, ))
         arr.setflags(write=False)
         return arr
     

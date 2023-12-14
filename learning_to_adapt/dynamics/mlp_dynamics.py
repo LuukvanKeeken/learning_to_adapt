@@ -31,7 +31,7 @@ class MLPDynamicsModel(Serializable):
                  batch_size=500,
                  learning_rate=0.001,
                  normalize_input=True,
-                 optimizer=tf.keras.optimizers.Adam,
+                 optimizer=tf.train.AdamOptimizer,
                  valid_split_ratio=0.2,
                  rolling_average_persitency=0.99,
                  ):

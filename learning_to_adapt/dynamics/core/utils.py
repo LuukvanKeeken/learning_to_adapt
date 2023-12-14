@@ -13,7 +13,7 @@ def create_dnn(name,
                n_channels,
                input_dim=None,
                input_var=None,
-               w_init=tf.keras.initializers.GlorotUniform(),
+               w_init=tf.contrib.layers.xavier_initializer(),
                b_init=tf.zeros_initializer(),
                ):
     """
@@ -78,7 +78,7 @@ def create_mlp(output_dim,
                output_nonlinearity,
                input_dim=None,
                input_var=None,
-               w_init=tf.keras.initializers.GlorotUniform(),
+               w_init=tf.contrib.layers.xavier_initializer(),
                b_init=tf.zeros_initializer(),
                batch_normalization=False,
                reuse=False,
@@ -116,9 +116,6 @@ def create_mlp(output_dim,
         elif batch_normalization == 'testing':
             x = tf.layers.batch_normalization(x, training=False)
 
-
-        
-
         x = tf.layers.dense(x,
                             hidden_size,
                             name='hidden_%d' % idx,
@@ -154,7 +151,7 @@ def create_rnn(name,
                input_dim=None,
                input_var=None,
                state_var=None,
-               w_init=tf.keras.initializers.GlorotUniform(),
+               w_init=tf.contrib.layers.xavier_initializer(),
                b_init=tf.zeros_initializer(),
                reuse=False,
                ):

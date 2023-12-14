@@ -9,7 +9,7 @@ def create_mlp(name,
                output_nonlinearity,
                input_dim=None,
                input_var=None,
-               w_init=tf.keras.initializers.GlorotUniform(),
+               w_init=tf.contrib.layers.xavier_initializer(),
                b_init=tf.zeros_initializer(),
                reuse=False
                ):
@@ -128,7 +128,7 @@ def create_rnn(name,
                input_dim=None,
                input_var=None,
                state_var=None,
-               w_init=tf.keras.initializers.GlorotUniform(),
+               w_init=tf.contrib.layers.xavier_initializer(),
                b_init=tf.zeros_initializer(),
                ):
     """
