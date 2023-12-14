@@ -73,9 +73,9 @@ if __name__ == '__main__':
 
     config = {
                 # Environment
-                'env': HalfCheetahEnv,
-                'max_path_length': 1000,
-                'task': None,
+                'env': CartPoleEnv,
+                'max_path_length': 200,
+                'task': 'original',
                 'normalize': True,
                  'n_itr': 50,
                 'discount': 1.,
