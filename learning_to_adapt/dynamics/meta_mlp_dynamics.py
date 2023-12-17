@@ -36,6 +36,8 @@ class MetaMLPDynamicsModel(Serializable):
                  optimizer=tf.train.AdamOptimizer,
                  valid_split_ratio=0.2,
                  rolling_average_persitency=0.99,
+                 num_rollouts=5,
+                 max_path_length=200,
                  ):
 
         Serializable.quick_init(self, locals())
@@ -56,6 +58,8 @@ class MetaMLPDynamicsModel(Serializable):
         self._dataset_test = None
         self._prev_params = None
         self._adapted_param_values = None
+        self.num_rollouts = num_rollouts
+        self.max_path_length = max_path_length
 
         # determine dimensionality of state and action space
         self.obs_space_dims = obs_space_dims = env.observation_space.shape[0]
@@ -167,6 +171,9 @@ class MetaMLPDynamicsModel(Serializable):
     def fit(self, obs, act, obs_next, epochs=1000, compute_normalization=True,
             valid_split_ratio=None, rolling_average_persitency=None, verbose=False, log_tabular=False):
 
+        if act.ndim == 2 and act.shape[0] == self.num_rollouts and act.shape[1] == (self.max_path_length - 1):
+            act = np.reshape(act, (act.shape[0], act.shape[1], 1))
+            
         assert obs.ndim == 3 and obs.shape[2] == self.obs_space_dims
         assert obs_next.ndim == 3 and obs_next.shape[2] == self.obs_space_dims
         assert act.ndim == 3 and act.shape[2] == self.action_space_dims
@@ -262,7 +269,7 @@ class MetaMLPDynamicsModel(Serializable):
                               time.time() - t0))
 
             if valid_loss_rolling_average_prev < valid_loss_rolling_average or epoch == epochs - 1:
-                logger.log('Stopping Training of Model since its valid_loss_rolling_average decreased')
+                logger.log('Stopping Training of Model since its valid_loss_rolling_average increased')
                 break
             valid_loss_rolling_average_prev = valid_loss_rolling_average
 

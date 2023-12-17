@@ -31,6 +31,8 @@ def run_experiment(config):
         rolling_average_persitency=config['rolling_average_persitency'],
         hidden_nonlinearity=config['hidden_nonlinearity_model'],
         batch_size=config['adapt_batch_size'],
+        num_rollouts=config['num_rollouts'],
+        max_path_length=config['max_path_length'],
     )
 
     policy = MPCController(

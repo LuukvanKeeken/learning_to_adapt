@@ -1,6 +1,7 @@
 from learning_to_adapt.policies.base import Policy
 from learning_to_adapt.utils.serializable import Serializable
 import numpy as np
+import gym
 
 
 class MPCController(Policy, Serializable):
@@ -65,7 +66,10 @@ class MPCController(Policy, Serializable):
         return actions, dict()
 
     def get_random_action(self, n):
-        return np.random.uniform(low=self.action_space.low,
+        if isinstance(self.action_space, gym.spaces.Discrete):
+            return np.random.randint(low=0, high=self.action_space.n, size=n)
+        else:
+            return np.random.uniform(low=self.action_space.low,
                                  high=self.action_space.high, size=(n,) + self.action_space.low.shape)
 
     def get_cem_action(self, observations):
