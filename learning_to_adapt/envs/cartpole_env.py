@@ -83,7 +83,7 @@ class CartPoleEnv(Env, Serializable):
             action = action[0]
             
         next_obs, reward, done, info = self.env.step(action)
-        done = False
+        # done = False
         return next_obs, reward, done, info
 
 
