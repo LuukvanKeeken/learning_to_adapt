@@ -171,6 +171,7 @@ class MetaMLPDynamicsModel(Serializable):
     def fit(self, obs, act, obs_next, epochs=1000, compute_normalization=True,
             valid_split_ratio=None, rolling_average_persitency=None, verbose=False, log_tabular=False):
 
+        # Account for environments that have action spaces that are one-dimensional, such as CartPole.
         if act.ndim == 2 and act.shape[0] == self.num_rollouts and act.shape[1] == (self.max_path_length - 1):
             act = np.reshape(act, (act.shape[0], act.shape[1], 1))
             
@@ -268,9 +269,14 @@ class MetaMLPDynamicsModel(Serializable):
                            % (epoch, np.mean(post_batch_losses), valid_loss, valid_loss_rolling_average,
                               time.time() - t0))
 
-            if valid_loss_rolling_average_prev < valid_loss_rolling_average or epoch == epochs - 1:
+            if valid_loss_rolling_average_prev < valid_loss_rolling_average:
                 logger.log('Stopping Training of Model since its valid_loss_rolling_average increased')
                 break
+
+            if epoch == epochs - 1:
+                logger.log('Stopping Training of Model since it reached max epochs')
+                break
+
             valid_loss_rolling_average_prev = valid_loss_rolling_average
 
         """ ------- Tabular Logging ------- """

@@ -29,6 +29,8 @@ def run_experiment(config):
         backprop_steps=config['backprop_steps'],
         cell_type=config['cell_type'],
         batch_size=config['batch_size'],
+        num_rollouts=config['num_rollouts'],
+        max_path_length=config['max_path_length'],
     )
 
     policy = RNNMPCController(
@@ -70,8 +72,9 @@ if __name__ == '__main__':
 
     config = {
             # Environment
-            'env': HalfCheetahEnv,
-            'task': None,
+            'env': CartPoleEnv,
+            'task': 'original',
+            'max_path_length': 200,
 
             # Policy
             'n_candidates': 500,
@@ -81,7 +84,6 @@ if __name__ == '__main__':
             'discount': 1.,
 
             # Sampling
-            'max_path_length': 1000,
             'num_rollouts': 5,
             'initial_random_samples': True,
 
