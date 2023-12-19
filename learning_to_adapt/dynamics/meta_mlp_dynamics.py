@@ -398,7 +398,7 @@ class MetaMLPDynamicsModel(Serializable):
                 num_paths = len(sufficiently_long_paths_indices[0])
                 path_lengths = path_lengths[sufficiently_long_paths_indices]
                 idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
-                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else 16 for len_path in path_lengths[idx_path]]
+                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else self.batch_size for len_path in path_lengths[idx_path]]
 
                 obs_batch = np.concatenate([self._dataset_train['obs'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
                 act_batch = np.concatenate([self._dataset_train['act'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
@@ -435,6 +435,10 @@ class MetaMLPDynamicsModel(Serializable):
                 sufficiently_longs_acts = dataset_test['act'][sufficiently_long_paths_indices]
                 sufficiently_long_deltas = dataset_test['delta'][sufficiently_long_paths_indices]
                 
+                # If there are no rollouts with sufficient lengths,
+                # then pad them with zeros until they are long enough.
+                # This is not a perfect solution, but it will likely
+                # only affect the first epoch.
                 while sufficiently_long_paths_indices[0].size == 0:
                     for i in range(len(dataset_test['obs'])):
                         obs = dataset_test['obs'][i]
@@ -456,7 +460,7 @@ class MetaMLPDynamicsModel(Serializable):
                 num_paths = len(sufficiently_long_paths_indices[0])
                 path_lengths = path_lengths[sufficiently_long_paths_indices]
                 idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
-                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else 16 for len_path in path_lengths[idx_path]]
+                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else self.batch_size for len_path in path_lengths[idx_path]]
 
                 obs_batch = np.concatenate([dataset_test['obs'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
                 act_batch = np.concatenate([dataset_test['act'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)

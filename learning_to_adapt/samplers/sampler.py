@@ -79,7 +79,8 @@ class Sampler(BaseSampler):
                 agent_infos = {}
             else:
                 a_bs = self.adapt_batch_size
-                if a_bs is not None and len(running_paths[0]['observations']) > a_bs + 1:
+                running_path_lengths = np.array([len(running_paths[i]['observations']) for i in range(len(running_paths))])
+                if a_bs is not None and (running_path_lengths > a_bs + 1).all():
                     adapt_obs = [np.stack(running_paths[idx]['observations'][-a_bs - 1:-1])
                                  for idx in range(num_envs)]
                     adapt_act = [np.stack(running_paths[idx]['actions'][-a_bs-1:-1])
