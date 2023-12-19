@@ -1,3 +1,4 @@
+from copy import deepcopy
 import gym
 from learning_to_adapt.dynamics.core.layers import MLP
 from collections import OrderedDict
@@ -378,40 +379,105 @@ class MetaMLPDynamicsModel(Serializable):
 
     def _get_batch(self, train=True):
         if train:
-            if len(self._dataset_train['obs']) == 1:
-                path_lengths = [len(o) for o in self._dataset_train['obs']]
-                sufficiently_long_paths = np.array(path_lengths) > self.batch_size * 2
+            # If not all rollouts have the same length
+            if len(self._dataset_train['obs'].shape) == 1:
+                # Select only the paths with a sufficient number of timesteps,
+                # and place only those back in the training set.
+                path_lengths = np.array([len(o) for o in self._dataset_train['obs']])
+                sufficiently_long_paths_indices = np.where(path_lengths >= self.batch_size * 2)
+                sufficiently_long_obs = self._dataset_train['obs'][sufficiently_long_paths_indices]
+                sufficiently_longs_acts = self._dataset_train['act'][sufficiently_long_paths_indices]
+                sufficiently_long_deltas = self._dataset_train['delta'][sufficiently_long_paths_indices]
                 
+                assert sufficiently_long_paths_indices[0].size > 0, "No paths are longer than 2*batch_size"
+
+                self._dataset_train = dict(obs=sufficiently_long_obs, 
+                                           act=sufficiently_longs_acts,
+                                           delta=sufficiently_long_deltas)
+                
+                num_paths = len(sufficiently_long_paths_indices[0])
+                path_lengths = path_lengths[sufficiently_long_paths_indices]
+                idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
+                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else 16 for len_path in path_lengths[idx_path]]
+
+                obs_batch = np.concatenate([self._dataset_train['obs'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                act_batch = np.concatenate([self._dataset_train['act'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                delta_batch = np.concatenate([self._dataset_train['delta'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
 
 
-            num_paths, len_path = self._dataset_train['obs'].shape[:2]
-            idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
-            idx_batch = np.random.randint(self.batch_size, len_path - self.batch_size, size=self.meta_batch_size)
 
-            obs_batch = np.concatenate([self._dataset_train['obs'][ip,
-                                        ib - self.batch_size:ib + self.batch_size, :]
-                                        for ip, ib in zip(idx_path, idx_batch)], axis=0)
-            act_batch = np.concatenate([self._dataset_train['act'][ip,
-                                        ib - self.batch_size:ib + self.batch_size, :]
-                                        for ip, ib in zip(idx_path, idx_batch)], axis=0)
-            delta_batch = np.concatenate([self._dataset_train['delta'][ip,
-                                          ib - self.batch_size:ib + self.batch_size, :]
-                                          for ip, ib in zip(idx_path, idx_batch)], axis=0)
+
+
+            else: # If all rollouts have the same length
+                num_paths, len_path = self._dataset_train['obs'].shape[:2]
+                idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
+                idx_batch = np.random.randint(self.batch_size, len_path - self.batch_size, size=self.meta_batch_size)
+
+                obs_batch = np.concatenate([self._dataset_train['obs'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                act_batch = np.concatenate([self._dataset_train['act'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                delta_batch = np.concatenate([self._dataset_train['delta'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
 
         else:
-            num_paths, len_path = self._dataset_test['obs'].shape[:2]
-            idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
-            idx_batch = np.random.randint(self.batch_size, len_path - self.batch_size, size=self.meta_batch_size)
+            # If not all rollouts have the same length
+            if len(self._dataset_test['obs'].shape) == 1:
+                # Select only the paths with a sufficient number of timesteps,
+                # and place only those back in the training set.
+                dataset_test = deepcopy(self._dataset_test)
+                path_lengths = np.array([len(o) for o in dataset_test['obs']])
+                sufficiently_long_paths_indices = np.where(path_lengths >= self.batch_size * 2)
+                sufficiently_long_obs = dataset_test['obs'][sufficiently_long_paths_indices]
+                sufficiently_longs_acts = dataset_test['act'][sufficiently_long_paths_indices]
+                sufficiently_long_deltas = dataset_test['delta'][sufficiently_long_paths_indices]
+                
+                while sufficiently_long_paths_indices[0].size == 0:
+                    for i in range(len(dataset_test['obs'])):
+                        obs = dataset_test['obs'][i]
+                        act = dataset_test['act'][i]
+                        delta = dataset_test['delta'][i]
 
-            obs_batch = np.concatenate([self._dataset_test['obs'][ip,
-                                        ib - self.batch_size:ib + self.batch_size, :]
-                                        for ip, ib in zip(idx_path, idx_batch)], axis=0)
-            act_batch = np.concatenate([self._dataset_test['act'][ip,
-                                        ib - self.batch_size:ib + self.batch_size, :]
-                                        for ip, ib in zip(idx_path, idx_batch)], axis=0)
-            delta_batch = np.concatenate([self._dataset_test['delta'][ip,
-                                          ib - self.batch_size:ib + self.batch_size, :]
-                                          for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                        dataset_test['obs'][i] = np.concatenate([obs, np.zeros_like(obs)], axis=0)
+                        dataset_test['act'][i] = np.concatenate([act, np.zeros_like(act)], axis=0)
+                        dataset_test['delta'][i] = np.concatenate([delta, np.zeros_like(delta)], axis=0)
+                    
+                    path_lengths = np.array([len(o) for o in dataset_test['obs']])
+                    sufficiently_long_paths_indices = np.where(path_lengths >= self.batch_size * 2)
+                    sufficiently_long_obs = dataset_test['obs'][sufficiently_long_paths_indices]
+                    sufficiently_longs_acts = dataset_test['act'][sufficiently_long_paths_indices]
+                    sufficiently_long_deltas = dataset_test['delta'][sufficiently_long_paths_indices]
+
+                assert sufficiently_long_paths_indices[0].size > 0, "No paths are longer than 2*batch_size"
+
+                num_paths = len(sufficiently_long_paths_indices[0])
+                path_lengths = path_lengths[sufficiently_long_paths_indices]
+                idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
+                idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else 16 for len_path in path_lengths[idx_path]]
+
+                obs_batch = np.concatenate([dataset_test['obs'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                act_batch = np.concatenate([dataset_test['act'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                delta_batch = np.concatenate([dataset_test['delta'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
+
+            
+            else: # If all rollouts have the same length
+                num_paths, len_path = self._dataset_test['obs'].shape[:2]
+                idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
+                idx_batch = np.random.randint(self.batch_size, len_path - self.batch_size, size=self.meta_batch_size)
+
+                obs_batch = np.concatenate([self._dataset_test['obs'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                act_batch = np.concatenate([self._dataset_test['act'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                delta_batch = np.concatenate([self._dataset_test['delta'][ip,
+                                            ib - self.batch_size:ib + self.batch_size, :]
+                                            for ip, ib in zip(idx_path, idx_batch)], axis=0)
+                
         return obs_batch, act_batch, delta_batch
 
     def _normalize_data(self, obs, act, obs_next=None):
