@@ -10,17 +10,18 @@ import gym
 class CartPoleEnv(Env, Serializable):
 
 
-    def __init__(self, task='original', reset_every_episode=False, task_args = None):
+    def __init__(self, task=None, reset_every_episode=False, task_args = None):
         # Not sure if Serializable is actually needed
         Serializable.quick_init(self, locals())
 
 
         self.env = gym.make("CartPole-v0")
         self.reset_every_episode = reset_every_episode
+        task = None if task == 'None' else task
         self.task_args = task_args
 
         # Maybe 'original' should be 'None'?
-        assert task in ['original']
+        assert task in [None]
 
         super(CartPoleEnv, self).__init__()
 
