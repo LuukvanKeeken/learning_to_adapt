@@ -210,13 +210,22 @@ class MetaMLPDynamicsModel(Serializable):
             self._dataset_test = dict(obs=obs_test, act=act_test, delta=delta_test)
             self._dataset_train = dict(obs=obs_train, act=act_train, delta=delta_train)
         else:
-            self._dataset_test['obs'] = np.concatenate([self._dataset_test['obs'], obs_test])
-            self._dataset_test['act'] = np.concatenate([self._dataset_test['act'], act_test])
-            self._dataset_test['delta'] = np.concatenate([self._dataset_test['delta'], delta_test])
+            if (len(self._dataset_test['obs'].shape) == 1 and len(obs_test.shape) == 3):
+                self._dataset_test['obs'] = np.array(list(self._dataset_test['obs']) + list(obs_test))
+                self._dataset_test['act'] = np.array(list(self._dataset_test['act']) + list(act_test))
+                self._dataset_test['delta'] = np.array(list(self._dataset_test['delta']) + list(delta_test))
 
-            self._dataset_train['obs'] = np.concatenate([self._dataset_train['obs'], obs_train])
-            self._dataset_train['act'] = np.concatenate([self._dataset_train['act'], act_train])
-            self._dataset_train['delta'] = np.concatenate([self._dataset_train['delta'], delta_train])
+                self._dataset_train['obs'] = np.array(list(self._dataset_train['obs']) + list(obs_train))
+                self._dataset_train['act'] = np.array(list(self._dataset_train['act']) + list(act_train))
+                self._dataset_train['delta'] = np.array(list(self._dataset_train['delta']) + list(delta_train))
+            else:
+                self._dataset_test['obs'] = np.concatenate([self._dataset_test['obs'], obs_test])
+                self._dataset_test['act'] = np.concatenate([self._dataset_test['act'], act_test])
+                self._dataset_test['delta'] = np.concatenate([self._dataset_test['delta'], delta_test])
+
+                self._dataset_train['obs'] = np.concatenate([self._dataset_train['obs'], obs_train])
+                self._dataset_train['act'] = np.concatenate([self._dataset_train['act'], act_train])
+                self._dataset_train['delta'] = np.concatenate([self._dataset_train['delta'], delta_train])
 
         valid_loss_rolling_average = None
         epoch_times = []
@@ -498,6 +507,7 @@ class MetaMLPDynamicsModel(Serializable):
             return obs_normalized, actions_normalized, deltas_normalized
         else:
             return obs_normalized, actions_normalized
+        
 
     def compute_normalization(self, obs, act, obs_next):
         assert obs.shape[0] == obs_next.shape[0] == act.shape[0]
@@ -575,8 +585,7 @@ class MetaMLPDynamicsModel(Serializable):
 
 def normalize(data_array, mean, std):
     if len(data_array.shape) == 1:
-        for i in range(len(data_array)):
-            data_array[i] = (data_array[i] - mean) / (std + 1e-10)
+        data_array = np.array([(data_array[i] - mean) / (std + 1e-10) for i in range(len(data_array))])
     else:    
         data_array = (data_array - mean) / (std + 1e-10)
 

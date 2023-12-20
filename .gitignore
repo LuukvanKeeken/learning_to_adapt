@@ -2,3 +2,4 @@
 data/
 MUJOCO_LOG.TXT
 .vscode/
+plotting/
