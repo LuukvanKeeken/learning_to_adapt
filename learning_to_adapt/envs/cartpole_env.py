@@ -82,6 +82,8 @@ class CartPoleEnv(Env, Serializable):
     def step(self, action):
         if action.shape == (1,):
             action = action[0]
+        elif action.ndim == 2:
+            action = action[0][0]
             
         next_obs, reward, done, info = self.env.step(action)
         # done = False

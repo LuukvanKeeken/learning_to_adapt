@@ -1,4 +1,5 @@
 from copy import deepcopy
+import random
 import gym
 from learning_to_adapt.dynamics.core.layers import MLP
 from collections import OrderedDict
@@ -466,9 +467,9 @@ class MetaMLPDynamicsModel(Serializable):
 
                 assert sufficiently_long_paths_indices[0].size > 0, "No paths are longer than 2*batch_size"
 
-                num_paths = len(sufficiently_long_paths_indices[0])
-                path_lengths = path_lengths[sufficiently_long_paths_indices]
-                idx_path = np.random.randint(0, num_paths, size=self.meta_batch_size)
+                
+                
+                idx_path = random.choices(sufficiently_long_paths_indices[0], k=self.meta_batch_size)
                 idx_batch = [np.random.randint(self.batch_size, len_path - self.batch_size) if len_path > self.batch_size * 2 else self.batch_size for len_path in path_lengths[idx_path]]
 
                 obs_batch = np.concatenate([dataset_test['obs'][ip][ib - self.batch_size:ib + self.batch_size] for ip, ib in zip(idx_path, idx_batch)], axis=0)
