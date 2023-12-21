@@ -211,6 +211,8 @@ class MetaMLPDynamicsModel(Serializable):
             self._dataset_test = dict(obs=obs_test, act=act_test, delta=delta_test)
             self._dataset_train = dict(obs=obs_train, act=act_train, delta=delta_train)
         else:
+            # If earlier rollouts did not all have the same lengths,
+            # but the newest data does.
             if (len(self._dataset_test['obs'].shape) == 1 and len(obs_test.shape) == 3):
                 self._dataset_test['obs'] = np.array(list(self._dataset_test['obs']) + list(obs_test))
                 self._dataset_test['act'] = np.array(list(self._dataset_test['act']) + list(act_test))
@@ -497,6 +499,7 @@ class MetaMLPDynamicsModel(Serializable):
     def _normalize_data(self, obs, act, obs_next=None):
         obs_normalized = normalize(obs, self.normalization['obs'][0], self.normalization['obs'][1])
 
+        # If the actions are discrete, they should not be normalized.
         if isinstance(self.env.action_space, gym.spaces.Discrete):
             actions_normalized = act
         else:
@@ -513,8 +516,11 @@ class MetaMLPDynamicsModel(Serializable):
     def compute_normalization(self, obs, act, obs_next):
         assert obs.shape[0] == obs_next.shape[0] == act.shape[0]
 
+        # If not all rollouts have the same lengths.
         if len(obs.shape) == 1:
             all_the_same = True
+            # Check if the obs, act, and obs_next arrays of a
+            # rollout have the same length.
             for o, a, o_n in zip(obs, act, obs_next):
                 if not(o.shape[0] == a.shape[0] == o_n.shape[0]):
                     all_the_same = False
@@ -522,6 +528,7 @@ class MetaMLPDynamicsModel(Serializable):
 
             assert all_the_same
 
+            # Concatenate all timesteps.
             obs_concat = np.concatenate(obs, axis = 0)
             act_concat = np.concatenate(act, axis = 0)
             obs_next_concat = np.concatenate(obs_next, axis = 0)
@@ -585,6 +592,7 @@ class MetaMLPDynamicsModel(Serializable):
 
 
 def normalize(data_array, mean, std):
+    # If not all rollouts have the same lengths.
     if len(data_array.shape) == 1:
         data_array = np.array([(data_array[i] - mean) / (std + 1e-10) for i in range(len(data_array))])
     else:    
@@ -608,6 +616,7 @@ def train_test_split(obs, act, delta, test_split_ratio=0.2):
     idx_test = indices[split_idx:]
     assert len(idx_train) + len(idx_test) == dataset_size
 
+    # If not all rollouts have the same lengths.
     if len(obs.shape) == 1:
         return obs[idx_train], act[idx_train], delta[idx_train], \
                obs[idx_test], act[idx_test], delta[idx_test]

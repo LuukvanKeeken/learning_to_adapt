@@ -1,3 +1,4 @@
+import gym
 from learning_to_adapt.dynamics.core.layers import RNN
 from collections import OrderedDict
 import tensorflow as tf
@@ -49,6 +50,7 @@ class RNNDynamicsModel(Serializable):
         self._dataset_test = None
         self.num_rollouts = num_rollouts
         self.max_path_length = max_path_length
+        self.env = env
 
         # Determine dimensionality of state and action space
         self.obs_space_dims = obs_space_dims = env.observation_space.shape[0]
@@ -109,10 +111,13 @@ class RNNDynamicsModel(Serializable):
         # Account for environments that have action spaces that are one-dimensional, such as CartPole.
         if act.ndim == 2 and act.shape[0] == self.num_rollouts and act.shape[1] == (self.max_path_length - 1):
             act = np.reshape(act, (act.shape[0], act.shape[1], 1))
+        elif act.ndim == 1 and (isinstance(act[0].shape, tuple) and len(act[0].shape) == 1):
+            for i in range(len(act)):
+                act[i] = np.reshape(act[i], (act[i].shape[0], 1))
 
-        assert obs.ndim == 3 and obs.shape[2] == self.obs_space_dims
-        assert obs_next.ndim == 3 and obs_next.shape[2] == self.obs_space_dims
-        assert act.ndim == 3 and act.shape[2] == self.action_space_dims
+        assert (obs.ndim == 3 and obs.shape[2] == self.obs_space_dims) or (obs.ndim == 1 and obs[0].shape[1] == self.obs_space_dims)
+        assert (obs_next.ndim == 3 and obs_next.shape[2] == self.obs_space_dims) or (obs_next.ndim == 1 and obs_next[0].shape[1] == self.obs_space_dims)
+        assert (act.ndim == 3 and act.shape[2] == self.action_space_dims) or (act.ndim == 1 and act[0].shape[1] == self.action_space_dims)
 
         if valid_split_ratio is None: valid_split_ratio = self.valid_split_ratio
         if rolling_average_persitency is None: rolling_average_persitency = self.rolling_average_persitency
@@ -127,7 +132,7 @@ class RNNDynamicsModel(Serializable):
         if self.normalize_input:
             # normalize data
             obs, act, delta = self._normalize_data(obs, act, obs_next)
-            assert obs.ndim == act.ndim == obs_next.ndim == 3
+            assert (obs.ndim == act.ndim == obs_next.ndim == 3) or (obs.ndim == act.ndim == delta.ndim == 1 and obs[0].shape[0] == act[0].shape[0] == delta[0].shape[0])
         else:
             delta = obs_next - obs
 
@@ -138,13 +143,24 @@ class RNNDynamicsModel(Serializable):
             self._dataset_test = dict(obs=obs_test, act=act_test, delta=delta_test)
             self._dataset_train = dict(obs=obs_train, act=act_train, delta=delta_train)
         else:
-            self._dataset_test['obs'] = np.concatenate([self._dataset_test['obs'], obs_test])
-            self._dataset_test['act'] = np.concatenate([self._dataset_test['act'], act_test])
-            self._dataset_test['delta'] = np.concatenate([self._dataset_test['delta'], delta_test])
+            # If earlier rollouts did not all have the same lengths,
+            # but the newest data does.
+            if (len(self._dataset_test['obs'].shape) == 1 and len(obs_test.shape) == 3):
+                self._dataset_test['obs'] = np.array(list(self._dataset_test['obs']) + list(obs_test))
+                self._dataset_test['act'] = np.array(list(self._dataset_test['act']) + list(act_test))
+                self._dataset_test['delta'] = np.array(list(self._dataset_test['delta']) + list(delta_test))
 
-            self._dataset_train['obs'] = np.concatenate([self._dataset_train['obs'], obs_train])
-            self._dataset_train['act'] = np.concatenate([self._dataset_train['act'], act_train])
-            self._dataset_train['delta'] = np.concatenate([self._dataset_train['delta'], delta_train])
+                self._dataset_train['obs'] = np.array(list(self._dataset_train['obs']) + list(obs_train))
+                self._dataset_train['act'] = np.array(list(self._dataset_train['act']) + list(act_train))
+                self._dataset_train['delta'] = np.array(list(self._dataset_train['delta']) + list(delta_train))
+            else:
+                self._dataset_test['obs'] = np.concatenate([self._dataset_test['obs'], obs_test])
+                self._dataset_test['act'] = np.concatenate([self._dataset_test['act'], act_test])
+                self._dataset_test['delta'] = np.concatenate([self._dataset_test['delta'], delta_test])
+
+                self._dataset_train['obs'] = np.concatenate([self._dataset_train['obs'], obs_train])
+                self._dataset_train['act'] = np.concatenate([self._dataset_train['act'], act_train])
+                self._dataset_train['delta'] = np.concatenate([self._dataset_train['delta'], delta_train])
 
             # create data queue
         if self.next_batch is None:
@@ -308,20 +324,51 @@ class RNNDynamicsModel(Serializable):
 
     def compute_normalization(self, obs, act, obs_next):
         assert obs.shape[0] == obs_next.shape[0] == act.shape[0]
-        assert obs.shape[1] == obs_next.shape[1] == act.shape[1]
-        delta = obs_next - obs
 
-        assert delta.ndim == 3 and delta.shape[2] == obs_next.shape[2] == obs.shape[2]
+        # If not all rollouts have the same lengths.
+        if len(obs.shape) == 1:
+            all_the_same = True
+            # Check if the obs, act, and obs_next arrays of a
+            # rollout have the same length.
+            for o, a, o_n in zip(obs, act, obs_next):
+                if not(o.shape[0] == a.shape[0] == o_n.shape[0]):
+                    all_the_same = False
+                    break
 
-        # store means and std in dict
-        self.normalization = OrderedDict()
-        self.normalization['obs'] = (np.mean(obs, axis=(0, 1)), np.std(obs, axis=(0, 1)))
-        self.normalization['delta'] = (np.mean(delta, axis=(0, 1)), np.std(delta, axis=(0, 1)))
-        self.normalization['act'] = (np.mean(act, axis=(0, 1)), np.std(act, axis=(0, 1)))
+            assert all_the_same
+
+            # Concatenate all timesteps.
+            obs_concat = np.concatenate(obs, axis = 0)
+            act_concat = np.concatenate(act, axis = 0)
+            obs_next_concat = np.concatenate(obs_next, axis = 0)
+
+            delta_concat = obs_next_concat - obs_concat
+
+            # store means and std in dict
+            self.normalization = OrderedDict()
+            self.normalization['obs'] = (np.mean(obs_concat, axis=0), np.std(obs_concat, axis=0))
+            self.normalization['delta'] = (np.mean(delta_concat, axis=0), np.std(delta_concat, axis=0))
+            self.normalization['act'] = (np.mean(act_concat, axis=0), np.std(act_concat, axis=0))
+        else:
+            assert obs.shape[1] == obs_next.shape[1] == act.shape[1]
+            delta = obs_next - obs
+
+            assert delta.ndim == 3 and delta.shape[2] == obs_next.shape[2] == obs.shape[2]
+
+            # store means and std in dict
+            self.normalization = OrderedDict()
+            self.normalization['obs'] = (np.mean(obs, axis=(0, 1)), np.std(obs, axis=(0, 1)))
+            self.normalization['delta'] = (np.mean(delta, axis=(0, 1)), np.std(delta, axis=(0, 1)))
+            self.normalization['act'] = (np.mean(act, axis=(0, 1)), np.std(act, axis=(0, 1)))
 
     def _normalize_data(self, obs, act, obs_next=None):
         obs_normalized = normalize(obs, self.normalization['obs'][0], self.normalization['obs'][1])
-        actions_normalized = normalize(act, self.normalization['act'][0], self.normalization['act'][1])
+
+        # If the actions are discrete, they should not be normalized.
+        if isinstance(self.env.action_space, gym.spaces.Discrete):
+            actions_normalized = act
+        else:
+            actions_normalized = normalize(act, self.normalization['act'][0], self.normalization['act'][1])
 
         if obs_next is not None:
             delta = obs_next - obs
@@ -345,7 +392,13 @@ class RNNDynamicsModel(Serializable):
 
 
 def normalize(data_array, mean, std):
-    return (data_array - mean) / (std + 1e-10)
+    # If not all rollouts have the same lengths.
+    if len(data_array.shape) == 1:
+        data_array = np.array([(data_array[i] - mean) / (std + 1e-10) for i in range(len(data_array))])
+    else:    
+        data_array = (data_array - mean) / (std + 1e-10)
+
+    return data_array
 
 
 def denormalize(data_array, mean, std):
@@ -362,6 +415,11 @@ def train_test_split(obs, act, delta, test_split_ratio=0.2):
     idx_train = indices[:split_idx]
     idx_test = indices[split_idx:]
     assert len(idx_train) + len(idx_test) == dataset_size
+
+    # If not all rollouts have the same lengths.
+    if len(obs.shape) == 1:
+        return obs[idx_train], act[idx_train], delta[idx_train], \
+               obs[idx_test], act[idx_test], delta[idx_test]
 
     return obs[idx_train, :], act[idx_train, :], delta[idx_train, :], \
            obs[idx_test, :], act[idx_test, :], delta[idx_test, :]

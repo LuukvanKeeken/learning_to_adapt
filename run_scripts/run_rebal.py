@@ -73,7 +73,7 @@ if __name__ == '__main__':
     config = {
             # Environment
             'env': CartPoleEnv,
-            'task': 'original',
+            'task': None,
             'max_path_length': 200,
 
             # Policy
