@@ -1,6 +1,8 @@
 import tensorflow as tf
 import time
 from learning_to_adapt.logger import logger
+from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized
+import numpy as np
 
 
 class Trainer(object):
@@ -30,6 +32,7 @@ class Trainer(object):
             initial_random_samples=True,
             dynamics_model_max_epochs=200,
             sess=None,
+            evaluate_agent=False
             ):
 
         self.env = env
@@ -46,6 +49,10 @@ class Trainer(object):
         if sess is None:
             sess = tf.Session()
         self.sess = sess
+
+        if evaluate_agent:
+            self.evaluate_agent = True
+            self.eval_seeds = np.load('./seeds/evaluation_seeds.npy')
 
     def train(self):
         """
@@ -94,6 +101,15 @@ class Trainer(object):
                                         log_tabular=True)
 
                 logger.record_tabular('Time-ModelFit', time.time() - time_fit_start)
+
+                """ -------------- Agent Evaluation ---------------------"""
+
+                if self.evaluate_agent:
+                    logger.log("Evaluating agent...")
+                    time_agent_eval = time.time()
+                    eval_rewards = evaluate_agent_vectorized(self.policy, self.env, 100, self.eval_seeds, 200, 16)
+                    logger.logkv('Eval-AverageReturn', np.mean(eval_rewards))
+                    logger.record_tabular('Time-AgentEval', time.time() - time_agent_eval)
 
                 """ ------------------- Logging --------------------------"""
                 logger.logkv('Itr', itr)

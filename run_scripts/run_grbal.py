@@ -66,6 +66,7 @@ def run_experiment(config):
         n_itr=config['n_itr'],
         initial_random_samples=config['initial_random_samples'],
         dynamics_model_max_epochs=config['dynamic_model_epochs'],
+        evaluate_agent = config['evaluate_agent'],
     )
     algo.train()
 
@@ -105,6 +106,7 @@ if __name__ == '__main__':
 
                 #  Other
                 'n_parallel': 5,
+                'evaluate_agent': True,
 
     }
 

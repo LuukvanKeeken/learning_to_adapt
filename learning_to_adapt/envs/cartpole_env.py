@@ -79,6 +79,10 @@ class CartPoleEnv(Env, Serializable):
         return 1 - already_terminated.astype(float)
     
     
+    def seed(self, seed):
+        self.env.seed(seed)
+
+
     def step(self, action):
         if action.shape == (1,):
             action = action[0]
