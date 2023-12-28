@@ -1,8 +1,10 @@
 import tensorflow as tf
 import time
 from learning_to_adapt.logger import logger
-from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized
+from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized, evaluate_agent_2, evaluate_agent_3
 import numpy as np
+
+from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor
 
 
 class Trainer(object):
@@ -53,6 +55,7 @@ class Trainer(object):
         if evaluate_agent:
             self.evaluate_agent = True
             self.eval_seeds = np.load('./seeds/evaluation_seeds.npy')
+            self.eval_envs = ParallelEnvExecutor(env, 5, 5, 200)
 
     def train(self):
         """
@@ -107,7 +110,8 @@ class Trainer(object):
                 if self.evaluate_agent:
                     logger.log("Evaluating agent...")
                     time_agent_eval = time.time()
-                    eval_rewards = evaluate_agent_vectorized(self.policy, self.env, 100, self.eval_seeds, 200, 16)
+                    eval_rewards = evaluate_agent_vectorized(self.policy, self.eval_envs, 100, self.eval_seeds, 200, 16)
+                    # eval_rewards = evaluate_agent_3(self.policy, 5, 100, 200, self.eval_seeds, 16)
                     logger.logkv('Eval-AverageReturn', np.mean(eval_rewards))
                     logger.record_tabular('Time-AgentEval', time.time() - time_agent_eval)
 

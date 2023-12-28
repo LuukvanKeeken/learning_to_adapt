@@ -141,7 +141,7 @@ class ParallelEnvExecutor(object):
             (list): list of (np.ndarray) with the new initial observation.
         """
         self.remotes[index].send(('reset', None))
-        return self.remotes[index].recv()
+        return self.remotes[index].recv()[0]
     
     def seed_individual(self, index, seed):
         """
@@ -151,6 +151,7 @@ class ParallelEnvExecutor(object):
             (list): list of (np.ndarray) with the new initial observation.
         """
         self.remotes[index].send(('seed', seed))
+        return self.remotes[index].recv()
 
     def set_tasks(self, tasks=None):
         """
@@ -228,8 +229,11 @@ def worker(remote, parent_remote, env_pickle, n_envs, max_path_length, seed):
             remote.close()
             break
 
+        # seed the 
         elif cmd == 'seed':
-            print('MAKE SOMETHING GOOD HERE!!!!!!!!!!!!!')
+            for env in envs:
+                env.seed(data)
+            remote.send(None)
 
         else:
             raise NotImplementedError

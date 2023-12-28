@@ -1,4 +1,5 @@
 import itertools
+import time
 import gym
 from learning_to_adapt.envs.cartpole_env import CartPoleEnv
 from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor
@@ -54,22 +55,75 @@ def evaluate_agent(policy, env, num_episodes, evaluation_seeds, max_path_length,
     return eval_rewards
 
 
-def evaluate_agent_vectorized(policy, env, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, pole_length = 0.5, pole_mass = 0.1, force_mag = 10):
+def evaluate_agent_2(policy, num_episodes, max_path_length, evaluation_seeds, adapt_batch_size, pole_length = 0.5, pole_mass = 0.1, force_mag = 10):
     evaluation_seeds = list(evaluation_seeds)
-    vec_env = ParallelEnvExecutor(env, 5, 5, max_path_length)
+    env = gym.make('CartPole-v0')
+    env.unwrapped.length = pole_length
+    env.unwrapped.masspole = pole_mass
+    env.unwrapped.force_mag = force_mag
 
-    for idx in range(vec_env.num_envs):
+    a_bs = adapt_batch_size
+    eval_rewards = []
+
+    for i_episode in range(num_episodes):
+        print(f'Eval episode {i_episode+1}')
+        env.seed(int(evaluation_seeds[i_episode]))
+        
+        observations = []
+        actions = []
+        rewards = []
+
+        o = env.reset()
+        policy.reset()
+        path_length = 0
+
+        while path_length < max_path_length:
+            action_selection_start = time.time()
+            if a_bs is not None and len(observations) > a_bs + 1:
+                adapt_obs = observations[-a_bs - 1:-1]
+                adapt_act = actions[-a_bs - 1:-1]
+                adapt_next_obs = observations[-a_bs:]
+                policy.dynamics_model.switch_to_pre_adapt()
+                policy.dynamics_model.adapt([np.array(adapt_obs)], [np.array(adapt_act)],
+                                            [np.array(adapt_next_obs)])
+            a, agent_info = policy.get_action(o)
+            action_selection_time = time.time() - action_selection_start
+            step_time = time.time()
+            next_o, r, d, env_info = env.step(a[0][0])
+            step_time = time.time() - step_time
+            print(f'Action selection time: {action_selection_time}')
+            print(f'Step time: {step_time}')
+            observations.append(o)
+            rewards.append(r)
+            actions.append(a[0])
+
+            path_length += 1
+            if d:
+                break
+            o = next_o
+
+        eval_rewards.append(sum(rewards))
+
+    return eval_rewards
+
+
+
+def evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, pole_length = 0.5, pole_mass = 0.1, force_mag = 10):
+    evaluation_seeds = list(evaluation_seeds)
+    
+
+    for idx in range(eval_envs.num_envs):
         # env.env.unwrapped.length = pole_length
         # env.env.unwrapped.masspole = pole_mass
         # env.env.unwrapped.force_mag = force_mag
-        vec_env.seed_individual(idx, int(evaluation_seeds.pop(0)))
+        eval_envs.seed_individual(idx, int(evaluation_seeds.pop(0)))
 
-    num_envs = vec_env.num_envs
+    num_envs = eval_envs.num_envs
     running_paths = [_get_empty_running_paths_dict() for _ in range(num_envs)]
 
     policy.reset(dones = [True] * num_envs)
 
-    obses = np.asarray(vec_env.reset())
+    obses = np.asarray(eval_envs.reset())
 
     finished_episodes = 0
 
@@ -91,13 +145,11 @@ def evaluate_agent_vectorized(policy, env, num_episodes, evaluation_seeds, max_p
             policy.dynamics_model.adapt(adapt_obs, adapt_act, adapt_next_obs)
         actions, agent_infos = policy.get_actions(obses)
 
-        next_obses, rewards, dones, env_infos = vec_env.step(actions)
+        next_obses, rewards, dones, env_infos = eval_envs.step(actions)
 
         # agent_infos, env_infos = _handle_info_dicts(agent_infos, env_infos)
 
-        for idx, observation, action, reward, env_info, agent_info, done in zip(itertools.count(), obses, actions,
-                                                                                rewards, env_infos, agent_infos,
-                                                                                dones):
+        for idx, observation, action, reward, done in zip(itertools.count(), obses, actions, rewards, dones):
             if isinstance(reward, np.ndarray):
                 reward = reward[0]
 
@@ -110,8 +162,9 @@ def evaluate_agent_vectorized(policy, env, num_episodes, evaluation_seeds, max_p
                 eval_rewards.append(sum(running_paths[idx]["rewards"]))
                 finished_episodes += 1
                 print(finished_episodes)
-                vec_env.seed_individual(idx, int(evaluation_seeds.pop(0)))
-                next_obses[idx] = vec_env.reset_individual(idx)
+                if evaluation_seeds:
+                    eval_envs.seed_individual(idx, int(evaluation_seeds.pop(0)))
+                next_obses[idx] = eval_envs.reset_individual(idx)
                 running_paths[idx] = _get_empty_running_paths_dict()
                 # I think this works?
                 reset_vals = [False] * num_envs
@@ -120,10 +173,6 @@ def evaluate_agent_vectorized(policy, env, num_episodes, evaluation_seeds, max_p
 
         obses = next_obses
 
-    for env in vec_env.envs:
-        env.env.unwrapped.length = 0.5
-        env.env.unwrapped.masspole = 0.1
-        env.env.unwrapped.force_mag = 10
 
     return eval_rewards
 
