@@ -152,6 +152,15 @@ class ParallelEnvExecutor(object):
         """
         self.remotes[index].send(('seed', seed))
         return self.remotes[index].recv()
+    
+
+    def set_env_params(self, params):
+
+        for remote in self.remotes:
+            remote.send(('set_env_params', params))
+        for remote in self.remotes:
+            remote.recv()
+
 
     def set_tasks(self, tasks=None):
         """
@@ -233,6 +242,12 @@ def worker(remote, parent_remote, env_pickle, n_envs, max_path_length, seed):
         elif cmd == 'seed':
             for env in envs:
                 env.seed(data)
+            remote.send(None)
+
+        # set the environment parameters
+        elif cmd == 'set_env_params':
+            for env in envs:
+                env.set_params(data)
             remote.send(None)
 
         else:

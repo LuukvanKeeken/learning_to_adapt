@@ -82,6 +82,11 @@ class CartPoleEnv(Env, Serializable):
     def seed(self, seed):
         self.env.seed(seed)
 
+    
+    def set_params(self, params):
+        self.env.unwrapped.length = params['pole_length']
+        self.env.unwrapped.masspole = params['pole_mass']
+        self.env.unwrapped.force_mag = params['force_mag']
 
     def step(self, action):
         if action.shape == (1,):

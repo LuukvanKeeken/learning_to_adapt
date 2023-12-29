@@ -1,7 +1,7 @@
 import tensorflow as tf
 import time
 from learning_to_adapt.logger import logger
-from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized, evaluate_agent_2, evaluate_agent_3
+from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized
 import numpy as np
 
 from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor

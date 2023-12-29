@@ -15,7 +15,7 @@ EXP_NAME = 'grbal'
 
 def run_experiment(config):
     exp_dir = os.getcwd() + '/data/' + EXP_NAME + '/' + config.get('exp_name', '')
-    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode='last')
+    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode=config['snapshot_mode'])
     json.dump(config, open(exp_dir + '/params.json', 'w'), indent=2, sort_keys=True, cls=ClassEncoder)
 
     env = normalize(config['env'](reset_every_episode=True, task=config['task']))
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 'max_path_length': 200,
                 'task': 'None',
                 'normalize': True,
-                 'n_itr': 50,
+                 'n_itr': 15,
                 'discount': 1.,
 
                 # Policy
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                 'initial_random_samples': True,
 
                 # Dynamics Model
-                'meta_batch_size': 10,
+                'meta_batch_size': 20,
                 'hidden_nonlinearity_model': 'relu',
                 'learning_rate': 1e-3,
                 'inner_learning_rate': 0.001,
@@ -107,6 +107,7 @@ if __name__ == '__main__':
                 #  Other
                 'n_parallel': 5,
                 'evaluate_agent': True,
+                'snapshot_mode': 'all',
 
     }
 

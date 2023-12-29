@@ -6,7 +6,7 @@ from learning_to_adapt.samplers.utils import rollout
 import json
 
 from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor
-from .CartPoleEval import evaluate_agent, evaluate_agent_vectorized
+from .CartPoleEval import evaluate_agent, evaluate_agent_vectorized, evaluate_agent_pole_length_range, evaluate_agent_pole_mass_range, evaluate_agent_force_mag_range
 import numpy as np
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with tf.Session() as sess:
-        pkl_path = osp.join(args.param, 'params.pkl')
+        pkl_path = osp.join(args.param, 'itr_3.pkl')
         json_path = osp.join(args.param, 'params.json')
         print("Testing policy %s" % pkl_path)
         json_params = json.load(open(json_path, 'r'))
@@ -40,9 +40,11 @@ if __name__ == "__main__":
         for i in range(args.num_rollouts):
             print("Performing evaluation ...")
             # eval_rewards = evaluate_agent(policy, env, 100, eval_seeds, args.max_path_length, json_params.get('adapt_batch_size', None))
-            eval_rewards = evaluate_agent_vectorized(policy, eval_envs, 100, eval_seeds, 200, 16)
-            print(np.mean(eval_rewards))
-            path = rollout(env, policy, max_path_length=args.max_path_length,
-                           animated=True, ignore_done=args.ignore_done,
-                           adapt_batch_size=json_params.get('adapt_batch_size', None))
+            # eval_rewards = evaluate_agent_vectorized(policy, eval_envs, 100, eval_seeds, 200, 16)
+            # print(np.mean(eval_rewards))
+            all_rewards = evaluate_agent_force_mag_range(policy, eval_envs, 25, eval_seeds, 200, 16, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
+            print(all_rewards)
+            # path = rollout(env, policy, max_path_length=args.max_path_length,
+            #                animated=True, ignore_done=args.ignore_done,
+            #                adapt_batch_size=json_params.get('adapt_batch_size', None))
             # print(sum(path['rewards']))
