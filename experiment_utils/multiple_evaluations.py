@@ -27,14 +27,14 @@ def find_smallest_postloss_index(path):
 if __name__ == "__main__":
 
     
-    paths = ['plotting/data/grbal_cartpole_15itr_run1/', 'plotting/data/grbal_cartpole_15itr_run2/']
+    paths = ['data/grbal_cartpole_15itr_run3/', 'data/grbal_cartpole_15itr_run4/', 'data/grbal_cartpole_15itr_run5/']
 
     for path in paths:
         print(f"Now evaluating {path}")
         smallest_postloss_idx = find_smallest_postloss_index(path)
-        indices = [14, 14]
-        # if smallest_postloss_idx != 14:
-        #     indices.append(smallest_postloss_idx)
+        indices = [14]
+        if smallest_postloss_idx != 14:
+            indices.append(smallest_postloss_idx)
         
         for i in indices:
             pole_length, pole_mass, force_mag = one_evaluation(path, i)
