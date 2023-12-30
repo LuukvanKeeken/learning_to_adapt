@@ -42,7 +42,8 @@ if __name__ == "__main__":
             # eval_rewards = evaluate_agent(policy, env, 100, eval_seeds, args.max_path_length, json_params.get('adapt_batch_size', None))
             # eval_rewards = evaluate_agent_vectorized(policy, eval_envs, 100, eval_seeds, 200, 16)
             # print(np.mean(eval_rewards))
-            all_rewards = evaluate_agent_force_mag_range(policy, eval_envs, 25, eval_seeds, 200, 16, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
+            all_rewards = evaluate_agent_pole_mass_range(policy, eval_envs, 25, eval_seeds, 200, 16, [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5])
+            np.save(f'{args.param}/rewards/pole_mass_itr3.npy', all_rewards)
             print(all_rewards)
             # path = rollout(env, policy, max_path_length=args.max_path_length,
             #                animated=True, ignore_done=args.ignore_done,
