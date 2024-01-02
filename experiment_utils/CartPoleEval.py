@@ -171,6 +171,9 @@ def evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds,
                 reset_vals[idx] = True
                 policy.reset(dones = reset_vals)
 
+                if finished_episodes >= num_episodes:
+                    break
+
         obses = next_obses
 
 
