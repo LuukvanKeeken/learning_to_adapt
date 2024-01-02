@@ -1,5 +1,6 @@
 *__pycache__
-data/
 MUJOCO_LOG.TXT
 .vscode/
 plotting/
+HOME
+.python-version
