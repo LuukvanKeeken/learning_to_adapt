@@ -37,4 +37,4 @@ if __name__ == "__main__":
             indices.append(smallest_postloss_idx)
         
         for i in indices:
-            pole_length, pole_mass, force_mag = one_evaluation(path, i)
+            one_evaluation(path, i)

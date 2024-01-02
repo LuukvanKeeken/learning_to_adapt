@@ -42,4 +42,4 @@ def one_evaluation(path, i):
     for process in eval_envs.ps:
         process.terminate()
 
-    return all_rewards_pole_length, all_rewards_pole_mass, all_rewards_force_mag
+    # return all_rewards_pole_length, all_rewards_pole_mass, all_rewards_force_mag
