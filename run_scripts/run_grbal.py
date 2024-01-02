@@ -111,4 +111,6 @@ if __name__ == '__main__':
 
     }
 
-    run_experiment(config)
+    for i in range(6, 10):
+        config['exp_name'] = f'cartpole_15itr_run{i}'
+        run_experiment(config)
