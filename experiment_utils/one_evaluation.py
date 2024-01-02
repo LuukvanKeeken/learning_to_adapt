@@ -36,10 +36,10 @@ def one_evaluation(path, i):
 
         
         print("Evaluating force mag ...")
-        all_rewards_force_mag = evaluate_agent_force_mag_range(policy, eval_envs, 25, eval_seeds, 200, 16, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
+        all_rewards_force_mag = evaluate_agent_force_mag_range(policy, eval_envs, 100, eval_seeds, 200, 16, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
         np.save(f'{path}adapt_evals/force_mag_itr{i}.npy', all_rewards_force_mag)
 
     for process in eval_envs.ps:
         process.terminate()
 
-    # return all_rewards_pole_length, all_rewards_pole_mass, all_rewards_force_mag
+    return all_rewards_pole_length, all_rewards_pole_mass, all_rewards_force_mag
