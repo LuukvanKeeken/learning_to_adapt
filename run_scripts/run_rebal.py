@@ -16,7 +16,7 @@ EXP_NAME = 'rebal'
 
 def run_experiment(config):
     exp_dir = os.getcwd() + '/data/' + EXP_NAME + '/' + config.get('exp_name', '')
-    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode='last')
+    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode=config['snapshot_mode'])
     json.dump(config, open(exp_dir + '/params.json', 'w'), indent=2, sort_keys=True, cls=ClassEncoder)
 
     env = normalize(config['env'](reset_every_episode=True, task=config['task']))
@@ -63,6 +63,8 @@ def run_experiment(config):
         n_itr=config['n_itr'],
         initial_random_samples=config['initial_random_samples'],
         dynamics_model_max_epochs=config['dynamic_model_epochs'],
+        evaluate_agent=config['evaluate_agent'],
+        num_eval_episodes=config['num_eval_episodes'],
     )
     algo.train()
 
@@ -88,10 +90,10 @@ if __name__ == '__main__':
             'initial_random_samples': True,
 
             # Training
-            'n_itr': 50,
+            'n_itr': 15,
             'learning_rate': 1e-2,
-            'batch_size': 10,
-            'backprop_steps': 100,
+            'batch_size': 1,
+            'backprop_steps': 20,
             'dynamic_model_epochs': 50,
             'valid_split_ratio': 0.1,
             'rolling_average_persitency': 0.99,
@@ -102,6 +104,9 @@ if __name__ == '__main__':
 
             #  Other
             'n_parallel': 5,
+            'evaluate_agent': True,
+            'num_eval_episodes': 100,
+            'snapshot_mode': 'all',
             }
 
     run_experiment(config)

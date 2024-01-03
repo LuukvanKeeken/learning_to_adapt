@@ -108,7 +108,7 @@ def evaluate_agent_2(policy, num_episodes, max_path_length, evaluation_seeds, ad
 
 
 
-def evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, pole_length = 0.5, pole_mass = 0.1, force_mag = 10):
+def evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, pole_length = 0.5, pole_mass = 0.1, force_mag = 10):
     evaluation_seeds = list(evaluation_seeds)
     
     env_params = {'pole_length': pole_length, 'pole_mass': pole_mass, 'force_mag': force_mag}
@@ -181,33 +181,33 @@ def evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds,
 
 
 
-def evaluate_agent_pole_length_range(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, range):
+def evaluate_agent_pole_length_range(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, range):
     all_rewards = []
 
     for pole_length in range:
         print(f'Evaluating pole length {pole_length}')
-        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, pole_length = pole_length)
+        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, pole_length = pole_length)
         all_rewards.append(rewards)
 
     return all_rewards
 
 
-def evaluate_agent_pole_mass_range(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, range):
+def evaluate_agent_pole_mass_range(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, range):
     all_rewards = []
 
     for pole_mass in range:
         print(f'Evaluating pole mass {pole_mass}')
-        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, pole_mass=pole_mass)
+        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, pole_mass=pole_mass)
         all_rewards.append(rewards)
 
     return all_rewards
 
-def evaluate_agent_force_mag_range(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, range):
+def evaluate_agent_force_mag_range(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, range):
     all_rewards = []
 
     for force_mag in range:
         print(f'Evaluating force mag {force_mag}')
-        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, max_path_length, adapt_batch_size, force_mag=force_mag)
+        rewards = evaluate_agent_vectorized(policy, eval_envs, num_episodes, evaluation_seeds, adapt_batch_size, force_mag=force_mag)
         all_rewards.append(rewards)
 
     return all_rewards

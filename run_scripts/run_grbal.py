@@ -67,6 +67,8 @@ def run_experiment(config):
         initial_random_samples=config['initial_random_samples'],
         dynamics_model_max_epochs=config['dynamic_model_epochs'],
         evaluate_agent = config['evaluate_agent'],
+        adapt_batch_size=config['adapt_batch_size'],
+        num_eval_episodes=config['num_eval_episodes'],
     )
     algo.train()
 
@@ -107,6 +109,7 @@ if __name__ == '__main__':
                 #  Other
                 'n_parallel': 5,
                 'evaluate_agent': True,
+                'num_eval_episodes': 100,
                 'snapshot_mode': 'all',
 
     }

@@ -34,7 +34,9 @@ class Trainer(object):
             initial_random_samples=True,
             dynamics_model_max_epochs=200,
             sess=None,
-            evaluate_agent=False
+            evaluate_agent=False,
+            adapt_batch_size=None,
+            num_eval_episodes=100,
             ):
 
         self.env = env
@@ -48,6 +50,9 @@ class Trainer(object):
 
         self.initial_random_samples = initial_random_samples
 
+        self.adapt_batch_size = adapt_batch_size
+        self.num_eval_episodes = num_eval_episodes
+
         if sess is None:
             sess = tf.Session()
         self.sess = sess
@@ -56,6 +61,8 @@ class Trainer(object):
             self.evaluate_agent = True
             self.eval_seeds = np.load('./seeds/evaluation_seeds.npy')
             self.eval_envs = ParallelEnvExecutor(env, 5, 5, 200)
+        else:
+            self.evaluate_agent = False
 
     def train(self):
         """
@@ -110,7 +117,7 @@ class Trainer(object):
                 if self.evaluate_agent:
                     logger.log("Evaluating agent...")
                     time_agent_eval = time.time()
-                    eval_rewards = evaluate_agent_vectorized(self.policy, self.eval_envs, 100, self.eval_seeds, 200, 16)
+                    eval_rewards = evaluate_agent_vectorized(self.policy, self.eval_envs, self.num_eval_episodes, self.eval_seeds, self.adapt_batch_size)
                     # eval_rewards = evaluate_agent_3(self.policy, 5, 100, 200, self.eval_seeds, 16)
                     logger.logkv('Eval-AverageReturn', np.mean(eval_rewards))
                     logger.record_tabular('Time-AgentEval', time.time() - time_agent_eval)

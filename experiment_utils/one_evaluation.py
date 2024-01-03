@@ -26,17 +26,17 @@ def one_evaluation(path, i):
 
         
         print("Evaluating pole length ...")
-        all_rewards_pole_length = evaluate_agent_pole_length_range(policy, eval_envs, 100, eval_seeds, 200, 16, [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0])
+        all_rewards_pole_length = evaluate_agent_pole_length_range(policy, eval_envs, 25, eval_seeds, None, [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0])
         np.save(f'{path}adapt_evals/pole_length_itr{i}.npy', all_rewards_pole_length)
 
         
         print("Evaluating pole mass ...")
-        all_rewards_pole_mass = evaluate_agent_pole_mass_range(policy, eval_envs, 100, eval_seeds, 200, 16, [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5])
+        all_rewards_pole_mass = evaluate_agent_pole_mass_range(policy, eval_envs, 25, eval_seeds, None, [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5])
         np.save(f'{path}adapt_evals/pole_mass_itr{i}.npy', all_rewards_pole_mass)
 
         
         print("Evaluating force mag ...")
-        all_rewards_force_mag = evaluate_agent_force_mag_range(policy, eval_envs, 100, eval_seeds, 200, 16, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
+        all_rewards_force_mag = evaluate_agent_force_mag_range(policy, eval_envs, 25, eval_seeds, None, [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0])
         np.save(f'{path}adapt_evals/force_mag_itr{i}.npy', all_rewards_force_mag)
 
     for process in eval_envs.ps:

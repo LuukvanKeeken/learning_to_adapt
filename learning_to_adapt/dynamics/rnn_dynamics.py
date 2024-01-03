@@ -176,9 +176,19 @@ class RNNDynamicsModel(Serializable):
         for epoch in range(epochs):
 
             # initialize data queue
-            feed_dict = {self.obs_dataset_ph: self._dataset_train['obs'],
-                         self.act_dataset_ph: self._dataset_train['act'],
-                         self.delta_dataset_ph: self._dataset_train['delta']}
+            # If not all rollout have the same length, feed in
+            # only one, because it has to be a numpy array. In
+            # this case the self._data_input_fn() will already
+            # sample from the complete dataset, so this has no
+            # effect.
+            if len(self._dataset_train['obs'].shape) == 1:
+                feed_dict = {self.obs_dataset_ph: self._dataset_train['obs'][0],
+                            self.act_dataset_ph: self._dataset_train['act'][0],
+                            self.delta_dataset_ph: self._dataset_train['delta'][0]}
+            else:
+                feed_dict = {self.obs_dataset_ph: self._dataset_train['obs'],
+                            self.act_dataset_ph: self._dataset_train['act'],
+                            self.delta_dataset_ph: self._dataset_train['delta']}
 
             sess.run(self.iterator.initializer, feed_dict=feed_dict)
 
@@ -214,17 +224,37 @@ class RNNDynamicsModel(Serializable):
                     _ = sess.run(self.train_op, feed_dict=feed_dict)
 
                 except tf.errors.OutOfRangeError:
-                    obs_test = self._dataset_test['obs']
-                    act_test = self._dataset_test['act']
-                    delta_test = self._dataset_test['delta']
-                    hidden_batch = self.get_initial_hidden(obs_test.shape[0])
+                    if len(self._dataset_test['obs'].shape) == 1:
+                        valid_loss = []
+                        for i in range(len(self._dataset_test['obs'])):
+                            obs_test = self._dataset_test['obs'][i]
+                            obs_test = obs_test.reshape((1, obs_test.shape[0], obs_test.shape[1]))
+                            act_test = self._dataset_test['act'][i]
+                            act_test = act_test.reshape((1, act_test.shape[0], act_test.shape[1]))
+                            delta_test = self._dataset_test['delta'][i]
+                            delta_test = delta_test.reshape((1, delta_test.shape[0], delta_test.shape[1]))
+                            hidden_batch = self.get_initial_hidden(1)
 
-                    # compute validation loss
-                    feed_dict = {self.obs_ph: obs_test,
-                                 self.act_ph: act_test,
-                                 self.delta_ph: delta_test,
-                                 self.hidden_state_ph: hidden_batch}
-                    valid_loss = sess.run(self.loss, feed_dict=feed_dict)
+                            feed_dict = {self.obs_ph: obs_test,
+                                         self.act_ph: act_test,
+                                         self.delta_ph: delta_test,
+                                         self.hidden_state_ph: hidden_batch}
+                            single_valid_loss = sess.run(self.loss, feed_dict=feed_dict)
+                            valid_loss.append(single_valid_loss)
+                        valid_loss = np.mean(valid_loss)
+
+                    else:
+                        obs_test = self._dataset_test['obs']
+                        act_test = self._dataset_test['act']
+                        delta_test = self._dataset_test['delta']
+                        hidden_batch = self.get_initial_hidden(obs_test.shape[0])
+
+                        # compute validation loss
+                        feed_dict = {self.obs_ph: obs_test,
+                                    self.act_ph: act_test,
+                                    self.delta_ph: delta_test,
+                                    self.hidden_state_ph: hidden_batch}
+                        valid_loss = sess.run(self.loss, feed_dict=feed_dict)
 
                     if valid_loss_rolling_average is None:
                         valid_loss_rolling_average = 1.5 * valid_loss  # set initial rolling to a higher value avoid too early stopping
@@ -283,22 +313,58 @@ class RNNDynamicsModel(Serializable):
 
     def _data_input_fn(self, obs, act, delta, batch_size=500, buffer_size=100000):
 
-        assert obs.ndim == act.ndim == delta.ndim == 3, "inputs must have 3 dims"
+        assert (obs.ndim == act.ndim == delta.ndim == 3) or (obs.ndim == 1 and obs[0].ndim == 2), "inputs must have 3 dims"
         assert obs.shape[0] == act.shape[0] == delta.shape[0], "inputs must have same length along axis 0"
-        assert obs.shape[1] == act.shape[1] == delta.shape[1], "inputs must have same length along axis 1"
-        assert obs.shape[2] == delta.shape[2], "obs and obs_next must have same length along axis 1 "
+        
+        # Account for environments that can have rollouts of different lengths.
+        if obs.ndim == 1:
+            assert obs[0].shape[0] == act[0].shape[0] == delta[0].shape[0], "inputs must have same length along axis 1"
+            assert obs[0].shape[1] == delta[0].shape[1], "obs and obs_next must have same length along axis 2 "
 
-        self.obs_dataset_ph = tf.placeholder(tf.float32, (None, None, obs.shape[2]))
-        self.act_dataset_ph = tf.placeholder(tf.float32, (None, None, act.shape[2]))
-        self.delta_dataset_ph = tf.placeholder(tf.float32, (None, None, delta.shape[2]))
+            def generator():
+                for o, a, d in zip(obs, act, delta):
+                    yield o, a, d
 
-        dataset = tf.data.Dataset.from_tensor_slices((self.obs_dataset_ph, self.act_dataset_ph, self.delta_dataset_ph))
-        dataset = dataset.batch(batch_size)
-        dataset = dataset.shuffle(buffer_size=buffer_size)
-        iterator = dataset.make_initializable_iterator()
-        next_batch = iterator.get_next()
+            self.obs_dataset_ph = tf.placeholder(tf.float32, (None, obs[0].shape[1]))
+            self.act_dataset_ph = tf.placeholder(tf.float32, (None, act[0].shape[1]))
+            self.delta_dataset_ph = tf.placeholder(tf.float32, (None, delta[0].shape[1]))
 
-        return next_batch, iterator
+            output_shapes = (tf.TensorShape([None, obs[0].shape[1]]), tf.TensorShape([None, act[0].shape[1]]), tf.TensorShape([None, delta[0].shape[1]]))
+            output_types = (tf.float32, tf.float32, tf.float32)
+
+            dataset = tf.data.Dataset.from_generator(generator, output_types, output_shapes)
+            dataset = dataset.batch(batch_size)
+            dataset = dataset.shuffle(buffer_size=buffer_size)
+            iterator = dataset.make_initializable_iterator()
+            next_batch = iterator.get_next()
+            
+            # self.obs_dataset_ph = tf.placeholder(tf.float32, (None, None, obs[0].shape[1]))
+            # self.act_dataset_ph = tf.placeholder(tf.float32, (None, None, act[0].shape[1]))
+            # self.delta_dataset_ph = tf.placeholder(tf.float32, (None, None, delta[0].shape[1]))
+
+            # dataset = tf.data.Dataset.from_tensor_slices((self.obs_dataset_ph, self.act_dataset_ph, self.delta_dataset_ph))
+            # dataset = dataset.batch(batch_size)
+            # dataset = dataset.shuffle(buffer_size=buffer_size)
+            # iterator = dataset.make_initializable_iterator()
+            # next_batch = iterator.get_next()
+
+            return next_batch, iterator
+
+        else:
+            assert obs.shape[1] == act.shape[1] == delta.shape[1], "inputs must have same length along axis 1"
+            assert obs.shape[2] == delta.shape[2], "obs and obs_next must have same length along axis 2 "
+
+            self.obs_dataset_ph = tf.placeholder(tf.float32, (None, None, obs.shape[2]))
+            self.act_dataset_ph = tf.placeholder(tf.float32, (None, None, act.shape[2]))
+            self.delta_dataset_ph = tf.placeholder(tf.float32, (None, None, delta.shape[2]))
+
+            dataset = tf.data.Dataset.from_tensor_slices((self.obs_dataset_ph, self.act_dataset_ph, self.delta_dataset_ph))
+            dataset = dataset.batch(batch_size)
+            dataset = dataset.shuffle(buffer_size=buffer_size)
+            iterator = dataset.make_initializable_iterator()
+            next_batch = iterator.get_next()
+
+            return next_batch, iterator
 
     def get_initial_hidden(self, batch_size):
         sess = tf.get_default_session()
