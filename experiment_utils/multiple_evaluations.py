@@ -27,7 +27,7 @@ def find_smallest_postloss_index(path):
 if __name__ == "__main__":
 
     
-    paths = ['data/rebal_cartpole_15itr_run2/']
+    paths = ['data/grbal/cartpole_15itr_run11/']
 
     for path in paths:
         print(f"Now evaluating {path}")

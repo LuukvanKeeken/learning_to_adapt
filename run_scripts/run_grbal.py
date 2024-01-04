@@ -84,7 +84,7 @@ if __name__ == '__main__':
                 'max_path_length': 200,
                 'task': 'None',
                 'normalize': True,
-                 'n_itr': 1,
+                 'n_itr': 15,
                 'discount': 1.,
 
                 # Policy
@@ -116,6 +116,6 @@ if __name__ == '__main__':
 
     }
 
-    for i in range(7, 10):
+    for i in range(11, 12):
         config['exp_name'] = f'cartpole_15itr_run{i}'
         run_experiment(config)
