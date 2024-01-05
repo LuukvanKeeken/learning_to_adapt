@@ -66,7 +66,6 @@ class CartPoleEnv(Env, Serializable):
             random_pole_length = np.random.uniform(pole_length_range[0], pole_length_range[1])
             random_pole_mass = np.random.uniform(pole_mass_range[0], pole_mass_range[1])
             random_force_mag = np.random.uniform(force_mag_range[0], force_mag_range[1])
-            print(random_pole_length, random_pole_mass, random_force_mag)
 
             params = {'pole_length': random_pole_length, 
                       'pole_mass': random_pole_mass, 
