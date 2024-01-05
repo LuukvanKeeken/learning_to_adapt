@@ -3,6 +3,7 @@ from learning_to_adapt.spaces import Discrete
 from learning_to_adapt.envs.base import Env
 from learning_to_adapt.logger import logger
 import gym
+import numpy as np
 
 
 
@@ -20,8 +21,9 @@ class CartPoleEnv(Env, Serializable):
         task = None if task == 'None' else task
         self.task_args = task_args
 
-        # Maybe 'original' should be 'None'?
-        assert task in [None]
+        
+        assert task in [None, 'range']
+        self.task = task
 
         super(CartPoleEnv, self).__init__()
 
@@ -50,8 +52,35 @@ class CartPoleEnv(Env, Serializable):
 
 
     def reset(self):
+        self.reset_task()
         init_obs = self.env.reset()
         return init_obs
+    
+
+    def reset_task(self):
+        if self.task == 'range':
+            pole_length_range = self.task_args['pole_length_range']
+            pole_mass_range = self.task_args['pole_mass_range']
+            force_mag_range = self.task_args['force_mag_range']
+
+            random_pole_length = np.random.uniform(pole_length_range[0], pole_length_range[1])
+            random_pole_mass = np.random.uniform(pole_mass_range[0], pole_mass_range[1])
+            random_force_mag = np.random.uniform(force_mag_range[0], force_mag_range[1])
+            print(random_pole_length, random_pole_mass, random_force_mag)
+
+            params = {'pole_length': random_pole_length, 
+                      'pole_mass': random_pole_mass, 
+                      'force_mag': random_force_mag}
+            
+            self.set_params(params)
+        elif self.task is None:
+            pass
+
+        else:
+            raise NotImplementedError
+
+
+
 
     # BASE DOESN'T HAVE THIS?
     # In the CartPole environment, the agent receives a reward
