@@ -11,7 +11,7 @@ import numpy as np
 class CartPoleEnv(Env, Serializable):
 
 
-    def __init__(self, task=None, reset_every_episode=False, task_args = None):
+    def __init__(self, task='range', reset_every_episode=True, task_args = {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)}):
         # Not sure if Serializable is actually needed
         Serializable.quick_init(self, locals())
 
