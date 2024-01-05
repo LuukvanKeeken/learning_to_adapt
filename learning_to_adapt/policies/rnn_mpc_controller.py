@@ -1,8 +1,8 @@
+import gym
 from learning_to_adapt.policies.base import Policy
 from learning_to_adapt.utils.serializable import Serializable
 import numpy as np
 import tensorflow as tf
-import gym
 
 
 class RNNMPCController(Policy, Serializable):
@@ -67,19 +67,13 @@ class RNNMPCController(Policy, Serializable):
 
     def get_random_action(self, n):
         if isinstance(self.action_space, gym.spaces.Discrete):
-            discrete_action_options = np.arange(self.action_space.n)
-            assert n % len(discrete_action_options) == 0, "n must be multiple of number of discrete actions"
-
-            return np.tile(discrete_action_options, int(n/len(discrete_action_options)))
+            return np.random.randint(self.action_space.n, size=(n,))
         else:
             return np.random.uniform(low=self.action_space.low,
-                                 high=self.action_space.high, size=(n,) + self.action_space.low.shape)
+                                high=self.action_space.high, size=(n,) + self.action_space.low.shape)
 
     def get_cem_action(self, observations):
-        if isinstance(self.action_space, gym.spaces.Discrete):
-            n = self.action_space.n
-        else:
-            n = self.n_candidates
+        n = self.n_candidates
 
         m = len(observations)
         h = self.horizon
@@ -120,10 +114,7 @@ class RNNMPCController(Policy, Serializable):
         return cand_a[range(m), np.argmax(returns, axis=1)]
 
     def get_rs_action(self, observations):
-        if isinstance(self.action_space, gym.spaces.Discrete):
-            n = self.action_space.n
-        else:
-            n = self.n_candidates
+        n = self.n_candidates
 
         m = len(observations)
         h = self.horizon

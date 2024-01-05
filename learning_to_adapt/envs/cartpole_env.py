@@ -11,9 +11,8 @@ import numpy as np
 class CartPoleEnv(Env, Serializable):
 
 
-    def __init__(self, task='range', reset_every_episode=True, task_args = {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)}):
-        # Not sure if Serializable is actually needed
-        Serializable.quick_init(self, locals())
+    def __init__(self, task=None, reset_every_episode=True, task_args = None):
+        super(CartPoleEnv, self).__init__()
 
 
         self.env = gym.make("CartPole-v0")
@@ -25,7 +24,9 @@ class CartPoleEnv(Env, Serializable):
         assert task in [None, 'range']
         self.task = task
 
-        super(CartPoleEnv, self).__init__()
+        
+        # Not sure if Serializable is actually needed
+        Serializable.quick_init(self, locals())
 
 
     # Something flat_dim

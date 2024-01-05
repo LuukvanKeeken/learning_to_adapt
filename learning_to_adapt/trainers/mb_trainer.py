@@ -1,11 +1,12 @@
 import tensorflow as tf
 import time
+from learning_to_adapt.envs.cartpole_env import CartPoleEnv
 from learning_to_adapt.logger import logger
 from experiment_utils.CartPoleEval import evaluate_agent, evaluate_agent_vectorized
 import numpy as np
 
 from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor
-
+from learning_to_adapt.envs.normalized_env import normalize
 
 class Trainer(object):
     """
@@ -60,7 +61,8 @@ class Trainer(object):
         if evaluate_agent:
             self.evaluate_agent = True
             self.eval_seeds = np.load('./seeds/evaluation_seeds.npy')
-            self.eval_envs = ParallelEnvExecutor(env, 5, 5, 200)
+            eval_env = normalize(CartPoleEnv(reset_every_episode=False, task=None))
+            self.eval_envs = ParallelEnvExecutor(eval_env, 5, 5, 200)
         else:
             self.evaluate_agent = False
 

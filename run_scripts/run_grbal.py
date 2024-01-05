@@ -112,7 +112,7 @@ if __name__ == '__main__':
                 #  Other
                 'n_parallel': 5,
                 'evaluate_agent': True,
-                'num_eval_episodes': 100,
+                'num_eval_episodes': 25,
                 'snapshot_mode': 'all',
 
     }
