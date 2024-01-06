@@ -1,0 +1,48 @@
+{
+  "adapt_batch_size": 16,
+  "discount": 1.0,
+  "dynamic_model_epochs": 100,
+  "env": {
+    "$class": "learning_to_adapt.envs.cartpole_env.CartPoleEnv"
+  },
+  "evaluate_agent": true,
+  "exp_name": "grbal_cartpole__30itr_taskrange_polelengthrange_0.5_2.0_run2",
+  "hidden_nonlinearity_model": "relu",
+  "hidden_sizes_model": [
+    512,
+    512,
+    512
+  ],
+  "horizon": 10,
+  "initial_random_samples": true,
+  "inner_learning_rate": 0.001,
+  "learning_rate": 0.001,
+  "max_path_length": 200,
+  "meta_batch_size": 20,
+  "n_candidates": 500,
+  "n_itr": 30,
+  "n_parallel": 5,
+  "normalize": true,
+  "num_cem_iters": 5,
+  "num_eval_episodes": 25,
+  "num_rollouts": 5,
+  "rolling_average_persitency": 0.99,
+  "snapshot_mode": "all",
+  "task": "range",
+  "task_args": {
+    "force_mag_range": [
+      10.0,
+      10.0
+    ],
+    "pole_length_range": [
+      0.5,
+      2.0
+    ],
+    "pole_mass_range": [
+      0.1,
+      0.1
+    ]
+  },
+  "use_cem": false,
+  "valid_split_ratio": 0.1
+}
