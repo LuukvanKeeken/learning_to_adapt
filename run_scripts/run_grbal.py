@@ -85,7 +85,7 @@ if __name__ == '__main__':
                 'task': 'range',
                 'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
-                 'n_itr': 15,
+                 'n_itr': 30,
                 'discount': 1.,
 
                 # Policy

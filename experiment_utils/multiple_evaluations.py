@@ -27,13 +27,13 @@ def find_smallest_postloss_index(path):
 if __name__ == "__main__":
 
     
-    paths = ['data/grbal/cartpole_15itr_run11/']
+    paths = ['data/grbal/grbal_cartpole_30itr_taskrange_polelengthrange_0.5_2.0_run5/']
 
     for path in paths:
         print(f"Now evaluating {path}")
         smallest_postloss_idx = find_smallest_postloss_index(path)
-        indices = [14]
-        if smallest_postloss_idx != 14:
+        indices = [29]
+        if smallest_postloss_idx != 29:
             indices.append(smallest_postloss_idx)
         
         for i in indices:
