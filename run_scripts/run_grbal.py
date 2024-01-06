@@ -118,5 +118,5 @@ if __name__ == '__main__':
     }
 
     for i in range(1, 6):
-        config['exp_name'] = f'grbal_cartpole__{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0_run{i}'
+        config['exp_name'] = f'grbal_cartpole_{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0_run{i}'
         run_experiment(config)

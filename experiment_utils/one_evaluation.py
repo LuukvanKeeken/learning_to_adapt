@@ -7,6 +7,10 @@ import json
 
 from learning_to_adapt.samplers.vectorized_env_executor import ParallelEnvExecutor
 from .CartPoleEval import evaluate_agent_pole_length_range, evaluate_agent_pole_mass_range, evaluate_agent_force_mag_range
+from learning_to_adapt.envs.normalized_env import normalize
+from learning_to_adapt.envs.cartpole_env import CartPoleEnv
+
+
 import numpy as np
 
 
@@ -20,7 +24,7 @@ def one_evaluation(path, i):
         json_params = json.load(open(json_path, 'r'))
         data = joblib.load(pkl_path)
         policy = data['policy']
-        env = data['env']
+        env = normalize(CartPoleEnv(reset_every_episode=False, task=None))
         eval_seeds = np.load('./seeds/evaluation_seeds.npy')
         eval_envs = ParallelEnvExecutor(env, 5, 5, 200)
 
