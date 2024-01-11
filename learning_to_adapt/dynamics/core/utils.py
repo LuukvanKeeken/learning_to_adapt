@@ -275,7 +275,7 @@ def forward_mlp(output_dim,
 
         if "kernel" in name:
             assert param.shape == (x.shape[-1], sizes[idx])
-            x = tf.matmul(x, param)
+            x = tf.tensordot(x, param, axes = [[2], [0]])
         elif "bias" in name:
             assert param.shape == (sizes[idx],)
             x = tf.add(x, param)

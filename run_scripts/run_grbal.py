@@ -101,7 +101,7 @@ if __name__ == '__main__':
                 'initial_random_samples': True,
 
                 # Dynamics Model
-                'meta_batch_size': 20,
+                'meta_batch_size': 500,
                 'hidden_nonlinearity_model': 'relu',
                 'learning_rate': 1e-3,
                 'inner_learning_rate': 0.001,
@@ -117,6 +117,6 @@ if __name__ == '__main__':
 
     }
 
-    for i in range(1, 6):
-        config['exp_name'] = f'grbal_cartpole_{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0_run{i}'
-        run_experiment(config)
+    
+    config['exp_name'] = f'gpudev_grbal_cartpole_{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0'
+    run_experiment(config)

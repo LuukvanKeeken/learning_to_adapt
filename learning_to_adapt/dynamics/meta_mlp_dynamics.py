@@ -106,44 +106,59 @@ class MetaMLPDynamicsModel(Serializable):
 
         pre_input_per_task, post_input_per_task = zip(*[tf.split(nn_input, 2, axis=0) for nn_input in nn_input_per_task])
         pre_delta_per_task, post_delta_per_task = zip(*[tf.split(delta, 2, axis=0) for delta in delta_per_task])
+        
+        pre_input_per_task_batched = tf.stack(pre_input_per_task)
+        post_input_per_task_batched = tf.stack(post_input_per_task)
+        pre_delta_per_task_batched = tf.stack(pre_delta_per_task)
+        post_delta_per_task_batched = tf.stack(post_delta_per_task)
+
 
         pre_losses = []
         post_losses = []
         self._adapted_params = []
 
-        for idx in range(self.meta_batch_size):
-            with tf.variable_scope(name + '/pre_model_%d' % idx, reuse=tf.AUTO_REUSE):
-                pre_mlp = MLP(name,
-                              output_dim=obs_space_dims,
-                              hidden_sizes=hidden_sizes,
-                              hidden_nonlinearity=hidden_nonlinearity,
-                              output_nonlinearity=output_nonlinearity,
-                              input_var=pre_input_per_task[idx],
-                              input_dim=obs_space_dims + action_space_dims,
-                              params=mlp.get_params())
+        
+        with tf.variable_scope(name + '/pre_model', reuse=tf.AUTO_REUSE):
+            pre_mlp = MLP(name,
+                            output_dim=obs_space_dims,
+                            hidden_sizes=hidden_sizes,
+                            hidden_nonlinearity=hidden_nonlinearity,
+                            output_nonlinearity=output_nonlinearity,
+                            input_var=pre_input_per_task_batched,
+                            input_dim=obs_space_dims + action_space_dims,
+                            params=mlp.get_params())
 
-                pre_delta_pred = pre_mlp.output_var
-                pre_loss = tf.reduce_mean(tf.square(pre_delta_per_task[idx] - pre_delta_pred))
-                adapted_params = self._adapt_sym(pre_loss, pre_mlp.get_params())
-                self._adapted_params.append(adapted_params)
+            pre_delta_pred_batched = pre_mlp.output_var
+            self.pre_delta_pred_batched = pre_delta_pred_batched
+            self.pre_delta_per_task_batched = pre_delta_per_task_batched
+            self.pre_input_per_task_batched = pre_input_per_task_batched
+            # PROBABLY SHOULDN'T DO REDUCE MEAN HERE
+            self.delta_diff = pre_delta_per_task_batched - pre_delta_pred_batched
+            self.squared_diff = tf.square(self.delta_diff)
+            self.correct_pre_loss = tf.reduce_mean(self.squared_diff, axis=[1,2])
+            self.pre_loss_actual = tf.reduce_mean(tf.square(pre_delta_per_task_batched - pre_delta_pred_batched), axis = 1)
+            adapted_params = self._adapt_sym(self.correct_pre_loss, pre_mlp.get_params())
+            self._adapted_params = adapted_params
 
-            with tf.variable_scope(name + '/post_model_%d' % idx, reuse=tf.AUTO_REUSE):
-                post_mlp = MLP(name,
-                               output_dim=obs_space_dims,
-                               hidden_sizes=hidden_sizes,
-                               hidden_nonlinearity=hidden_nonlinearity,
-                               output_nonlinearity=output_nonlinearity,
-                               input_var=post_input_per_task[idx],
-                               params=adapted_params,
-                               input_dim=obs_space_dims + action_space_dims)
-                post_delta_pred = post_mlp.output_var
+        with tf.variable_scope(name + '/post_model', reuse=tf.AUTO_REUSE):
+            post_mlp = MLP(name,
+                            output_dim=obs_space_dims,
+                            hidden_sizes=hidden_sizes,
+                            hidden_nonlinearity=hidden_nonlinearity,
+                            output_nonlinearity=output_nonlinearity,
+                            input_var=post_input_per_task_batched,
+                            params=adapted_params,
+                            input_dim=obs_space_dims + action_space_dims)
+            post_delta_pred_batched = post_mlp.output_var
 
-                post_loss = tf.reduce_mean(tf.square(post_delta_per_task[idx] - post_delta_pred))
+            post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis = 1)
 
-                pre_losses.append(pre_loss)
-                post_losses.append(post_loss)
+            #SELF.PRE_LOSS IS ALREADY ONE VALUE NOW
+            pre_losses.append(self.pre_loss_actual)
+            post_losses.append(post_loss)
 
             self.pre_loss = tf.reduce_mean(pre_losses)
+            
             self.post_loss = tf.reduce_mean(post_losses)
             self.train_op = optimizer(self.learning_rate).minimize(self.post_loss)
 
@@ -153,22 +168,23 @@ class MetaMLPDynamicsModel(Serializable):
             self.network_phs_meta_batch = []
 
             nn_input_per_task = tf.split(self.nn_input, self.meta_batch_size, axis=0)
-            for idx in range(meta_batch_size):
-                with tf.variable_scope('task_%i' % idx):
-                    network_phs = self._create_placeholders_for_vars(mlp.get_params())
-                    self.network_phs_meta_batch.append(network_phs)
+            nn_input_per_task_batched = tf.stack(nn_input_per_task)
 
-                    mlp_meta_batch = MLP(name,
-                                         output_dim=obs_space_dims,
-                                         hidden_sizes=hidden_sizes,
-                                         hidden_nonlinearity=hidden_nonlinearity,
-                                         output_nonlinearity=output_nonlinearity,
-                                         params=network_phs,
-                                         input_var=nn_input_per_task[idx],
-                                         input_dim=obs_space_dims + action_space_dims,
-                                         )
+            with tf.variable_scope('task'):
+                network_phs = self._create_placeholders_for_vars(mlp.get_params())
+                self.network_phs_meta_batch.append(network_phs)
 
-                    self.post_update_delta.append(mlp_meta_batch.output_var)
+                mlp_meta_batch = MLP(name,
+                                        output_dim=obs_space_dims,
+                                        hidden_sizes=hidden_sizes,
+                                        hidden_nonlinearity=hidden_nonlinearity,
+                                        output_nonlinearity=output_nonlinearity,
+                                        params=network_phs,
+                                        input_var=nn_input_per_task_batched,
+                                        input_dim=obs_space_dims + action_space_dims,
+                                        )
+
+                self.post_update_delta = mlp_meta_batch.output_var
 
         self._networks = [mlp]
 
@@ -380,6 +396,7 @@ class MetaMLPDynamicsModel(Serializable):
         self._prev_params = [nn.get_param_values() for nn in self._networks]
 
         sess = tf.get_default_session()
+        pre_loss, pre_delta_pred_batched, pre_delta_per_task_batched, pre_input_per_task_batched, diff, squared_diff, correct_pre_loss = sess.run([self.pre_loss_actual, self.pre_delta_pred_batched, self.pre_delta_per_task_batched, self.pre_input_per_task_batched, self.delta_diff, self.squared_diff, self.correct_pre_loss], feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
         self._adapted_param_values = sess.run(self._adapted_params[:self._num_adapted_models],
                                               feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
 
