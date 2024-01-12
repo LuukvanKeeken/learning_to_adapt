@@ -274,11 +274,20 @@ def forward_mlp(output_dim,
         assert str(idx) in name or (idx == len(hidden_sizes) and "output" in name)
 
         if "kernel" in name:
-            assert param.shape == (x.shape[-1], sizes[idx])
-            x = tf.tensordot(x, param, axes = [[2], [0]])
+            # Distinguish between a singular network and a batch of networks.
+            if len(param.shape) == 2:
+                assert param.shape == (x.shape[-1], sizes[idx])
+                x = tf.tensordot(x, param, axes=[[2], [0]])
+            else:
+                assert param.shape == (x.shape[0], x.shape[-1], sizes[idx]), "param has to be a batch of layers, representing multiple networks"
+                x = tf.einsum('abc,acd->abd', x, param)
         elif "bias" in name:
-            assert param.shape == (sizes[idx],)
-            x = tf.add(x, param)
+            if len(param.shape) == 1:
+                assert param.shape == (sizes[idx],)
+                x = tf.add(x, param)
+            else:
+                assert param.shape == (x.shape[0], sizes[idx]), "param has to be a batch of layers, representing multiple networks"
+                x = tf.add(x, tf.expand_dims(param, axis=1))
             bias_added = True
         else:
             raise NameError

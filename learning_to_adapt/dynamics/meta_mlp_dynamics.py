@@ -571,8 +571,11 @@ class MetaMLPDynamicsModel(Serializable):
 
     def _adapt_sym(self, loss, params_var):
         update_param_keys = list(params_var.keys())
+        
+        def _compute_gradients(loss):
+            return tf.gradients(loss, [params_var[key] for key in update_param_keys])
 
-        grads = tf.gradients(loss, [params_var[key] for key in update_param_keys])
+        grads = tf.map_fn(_compute_gradients, loss, dtype=[tf.float32 for _ in update_param_keys])
         gradients = dict(zip(update_param_keys, grads))
 
         # Gradient descent
