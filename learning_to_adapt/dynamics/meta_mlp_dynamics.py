@@ -151,15 +151,17 @@ class MetaMLPDynamicsModel(Serializable):
                             input_dim=obs_space_dims + action_space_dims)
             post_delta_pred_batched = post_mlp.output_var
 
-            post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis = 1)
+            old_post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis = 1)
+            correct_post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis=[1,2])
+
 
             #SELF.PRE_LOSS IS ALREADY ONE VALUE NOW
-            pre_losses.append(self.pre_loss_actual)
-            post_losses.append(post_loss)
+            # pre_losses.append(self.pre_loss_actual)
+            # post_losses.append(post_loss)
 
-            self.pre_loss = tf.reduce_mean(pre_losses)
+            self.pre_loss = tf.reduce_mean(self.correct_pre_loss)
             
-            self.post_loss = tf.reduce_mean(post_losses)
+            self.post_loss = tf.reduce_mean(correct_post_loss)
             self.train_op = optimizer(self.learning_rate).minimize(self.post_loss)
 
         """ --------------------------- Post-update Inference Graph --------------------------- """
@@ -570,13 +572,30 @@ class MetaMLPDynamicsModel(Serializable):
             self.normalization['act'] = (np.mean(act, axis=(0, 1)), np.std(act, axis=(0, 1)))
 
     def _adapt_sym(self, loss, params_var):
-        update_param_keys = list(params_var.keys())
+        # update_param_keys = list(params_var.keys())
         
-        def _compute_gradients(loss):
-            return tf.gradients(loss, [params_var[key] for key in update_param_keys])
+        # def _compute_gradients(loss):
+        #     return tf.gradients(loss, [params_var[key] for key in update_param_keys])
 
-        grads = tf.map_fn(_compute_gradients, loss, dtype=[tf.float32 for _ in update_param_keys])
-        gradients = dict(zip(update_param_keys, grads))
+        # grads = tf.map_fn(_compute_gradients, loss, dtype=[tf.float32 for _ in update_param_keys])
+        # gradients = dict(zip(update_param_keys, grads))
+
+        # # Gradient descent
+        # adapted_policy_params = [params_var[key] - tf.multiply(self.inner_learning_rate, gradients[key])
+        #                   for key in update_param_keys]
+
+        # adapted_policy_params_dict = OrderedDict(zip(update_param_keys, adapted_policy_params))
+
+        # return adapted_policy_params_dict
+
+        update_param_keys = list(params_var.keys())
+        all_grads = [[] for _ in range(len(update_param_keys))]
+        for i in range(self.meta_batch_size):
+            grads = tf.gradients(loss[i], [params_var[key] for key in update_param_keys])
+            # Append the gradient for each layer to its corresponding list
+            for j, grad in enumerate(grads):
+                all_grads[j].append(grad)
+        gradients = dict(zip(update_param_keys, all_grads))
 
         # Gradient descent
         adapted_policy_params = [params_var[key] - tf.multiply(self.inner_learning_rate, gradients[key])
