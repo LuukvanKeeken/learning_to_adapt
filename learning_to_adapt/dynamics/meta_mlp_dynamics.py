@@ -399,8 +399,16 @@ class MetaMLPDynamicsModel(Serializable):
 
         sess = tf.get_default_session()
         pre_loss, pre_delta_pred_batched, pre_delta_per_task_batched, pre_input_per_task_batched, diff, squared_diff, correct_pre_loss = sess.run([self.pre_loss_actual, self.pre_delta_pred_batched, self.pre_delta_per_task_batched, self.pre_input_per_task_batched, self.delta_diff, self.squared_diff, self.correct_pre_loss], feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
-        self._adapted_param_values = sess.run(self._adapted_params[:self._num_adapted_models],
+        
+        # Get all adapted networks.
+        adapted_param_values_all = sess.run(self._adapted_params,
                                               feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
+        
+        # For each layer type, get only the first num_adapted_models of layers.
+        self._adapted_param_values = OrderedDict()
+        for key, value in adapted_param_values_all.items():
+            self._adapted_param_values[key] = value[:self._num_adapted_models]
+        
         test = 1
 
     def switch_to_pre_adapt(self):
@@ -633,9 +641,10 @@ class MetaMLPDynamicsModel(Serializable):
 
     @property
     def network_params_feed_dict(self):
-        return dict(list((self.network_phs_meta_batch[i][key], self._adapted_param_values[i][key])
-                         for key in self._adapted_param_values[0].keys() for i in range(self._num_adapted_models)))
-
+        # return dict(list((self.network_phs_meta_batch[i][key], self._adapted_param_values[i][key])
+        #                  for key in self._adapted_param_values[0].keys() for i in range(self._num_adapted_models)))
+        return self._adapted_param_values
+    
     def __getstate__(self):
         state = dict()
         state['init_args'] = Serializable.__getstate__(self)

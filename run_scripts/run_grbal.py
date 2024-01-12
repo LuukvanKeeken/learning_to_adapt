@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 'learning_rate': 1e-3,
                 'inner_learning_rate': 0.001,
                 'hidden_sizes_model': (512, 512, 512),
-                'dynamic_model_epochs': 100,
+                'dynamic_model_epochs': 20,
                 'adapt_batch_size': 16,
 
                 #  Other
