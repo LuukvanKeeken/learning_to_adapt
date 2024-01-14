@@ -356,17 +356,17 @@ class MetaMLPDynamicsModel(Serializable):
         return pred_obs
 
     def _predict(self, obs, act):
-        if self._adapted_param_values is not None:
-            sess = tf.get_default_session()
-            # obs, act = self._pad_inputs(obs, act)
-            obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
-            act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
-            feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
-            feed_dict.update(self.network_params_feed_dict)
-            delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
-            delta = np.concatenate(delta, axis=0)
-        else:
-            delta = self.f_delta_pred(obs, act)
+        # if self._adapted_param_values is not None:
+        #     sess = tf.get_default_session()
+        #     # obs, act = self._pad_inputs(obs, act)
+        #     obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
+        #     act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
+        #     feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
+        #     feed_dict.update(self.network_params_feed_dict)
+        #     delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
+        #     delta = np.concatenate(delta, axis=0)
+        # else:
+        delta = self.f_delta_pred(obs, act)
         return delta
 
     def _pad_inputs(self, obs, act, obs_next=None):
