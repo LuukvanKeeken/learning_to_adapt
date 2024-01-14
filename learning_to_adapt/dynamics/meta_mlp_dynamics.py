@@ -168,9 +168,15 @@ class MetaMLPDynamicsModel(Serializable):
         with tf.variable_scope(name + '_ph_graph'):
             self.post_update_delta = []
             self.network_phs_meta_batch = []
+            
+            # nn_input_per_task = tf.split(self.nn_input, self._adapted_models_num, axis=0)
+            # nn_input_per_task_batched = tf.stack(nn_input_per_task)
 
-            nn_input_per_task = tf.split(self.nn_input, self.meta_batch_size, axis=0)
-            nn_input_per_task_batched = tf.stack(nn_input_per_task)
+            self.post_update_obs_ph = tf.placeholder(tf.float32, shape = (None, None, obs_space_dims))
+            self.post_update_act_ph = tf.placeholder(tf.float32, shape = (None, None, action_space_dims))
+
+            self.post_update_nn_input = tf.concat([self.post_update_obs_ph, self.post_update_act_ph], axis=2)
+
 
             with tf.variable_scope('task'):
                 self.network_phs_meta_batch = self._create_placeholders_for_vars(mlp.get_params())
@@ -181,7 +187,7 @@ class MetaMLPDynamicsModel(Serializable):
                                         hidden_nonlinearity=hidden_nonlinearity,
                                         output_nonlinearity=output_nonlinearity,
                                         params=self.network_phs_meta_batch,
-                                        input_var=nn_input_per_task_batched,
+                                        input_var=self.post_update_nn_input,
                                         input_dim=obs_space_dims + action_space_dims,
                                         )
 
@@ -352,8 +358,10 @@ class MetaMLPDynamicsModel(Serializable):
     def _predict(self, obs, act):
         if self._adapted_param_values is not None:
             sess = tf.get_default_session()
-            obs, act = self._pad_inputs(obs, act)
-            feed_dict = {self.obs_ph: obs, self.act_ph: act}
+            # obs, act = self._pad_inputs(obs, act)
+            obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
+            act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
+            feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
             feed_dict.update(self.network_params_feed_dict)
             delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
             delta = np.concatenate(delta, axis=0)
@@ -408,7 +416,6 @@ class MetaMLPDynamicsModel(Serializable):
         for key, value in adapted_param_values_all.items():
             self._adapted_param_values[key] = value[:self._num_adapted_models]
         
-        test = 1
 
     def switch_to_pre_adapt(self):
         if self._prev_params is not None:
@@ -600,13 +607,13 @@ class MetaMLPDynamicsModel(Serializable):
     def _create_placeholders_for_vars(self, vars):
         placeholders = OrderedDict()
         for key, var in vars.items():
-            placeholders[key] = tf.placeholder(tf.float32, shape=(self.meta_batch_size,) + tuple(var.shape), name=key + '_ph')
+            placeholders[key] = tf.placeholder(tf.float32, shape=(None,) + tuple(var.shape), name=key + '_ph')
         return OrderedDict(placeholders)
 
     @property
     def network_params_feed_dict(self):
-        return dict(list((self.network_phs_meta_batch[i][key], self._adapted_param_values[i][key])
-                     for key in self._adapted_param_values.keys() for i in range(self.meta_batch_size)))
+        return dict(list((self.network_phs_meta_batch[key], self._adapted_param_values[key])
+                         for key in self._adapted_param_values.keys()))
 
     
     def __getstate__(self):

@@ -279,14 +279,20 @@ def forward_mlp(output_dim,
                 assert param.shape == (x.shape[-1], sizes[idx])
                 x = tf.tensordot(x, param, axes=[[2], [0]])
             else:
-                assert param.shape == (x.shape[0], x.shape[-1], sizes[idx]), "param has to be a batch of layers, representing multiple networks"
+                param_shape_list = param.shape.as_list()
+                x_shape_list = [x.shape[0].value, x.shape[-1].value, sizes[idx]]
+                assert param_shape_list == x_shape_list or (param_shape_list[0] is None and x_shape_list[0] is None and param_shape_list[1:] == x_shape_list[1:]), "param has to be a batch of layers, representing multiple networks"
+                # assert param.shape == (x.shape[0], x.shape[-1], sizes[idx]) or (param.shape[0] == None and x.shape[0] == None and param.shape[1:] == (x.shape[-1], sizes[idx])), "param has to be a batch of layers, representing multiple networks"
                 x = tf.einsum('abc,acd->abd', x, param)
         elif "bias" in name:
             if len(param.shape) == 1:
                 assert param.shape == (sizes[idx],)
                 x = tf.add(x, param)
             else:
-                assert param.shape == (x.shape[0], sizes[idx]), "param has to be a batch of layers, representing multiple networks"
+                param_shape_list = param.shape.as_list()
+                x_shape_list = [x.shape[0].value, sizes[idx]]
+                assert param_shape_list == x_shape_list or (param_shape_list[0] is None and x_shape_list[0] is None and param_shape_list[1:] == x_shape_list[1:]), "param has to be a batch of layers, representing multiple networks"
+                # assert param.shape == (x.shape[0], sizes[idx]), "param has to be a batch of layers, representing multiple networks"
                 x = tf.add(x, tf.expand_dims(param, axis=1))
             bias_added = True
         else:
