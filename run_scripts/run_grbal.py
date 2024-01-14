@@ -10,6 +10,7 @@ from learning_to_adapt.envs import *
 import json
 import os
 import tensorflow as tf
+import cProfile, pstats
 
 EXP_NAME = 'grbal'
 
@@ -85,7 +86,7 @@ if __name__ == '__main__':
                 'task': 'range',
                 'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
-                 'n_itr': 15,
+                 'n_itr': 3,
                 'discount': 1.,
 
                 # Policy
@@ -116,7 +117,9 @@ if __name__ == '__main__':
                 'snapshot_mode': 'all',
 
     }
-
-    
     config['exp_name'] = f'gpudev_grbal_cartpole_{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0'
+    profiler = cProfile.Profile()
+    profiler.enable()
     run_experiment(config)
+    profiler.disable()
+    stats = pstats.Stats(profiler).dump_stats('profile_after_gpu')
