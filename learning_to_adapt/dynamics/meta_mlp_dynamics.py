@@ -173,15 +173,14 @@ class MetaMLPDynamicsModel(Serializable):
             nn_input_per_task_batched = tf.stack(nn_input_per_task)
 
             with tf.variable_scope('task'):
-                network_phs = self._create_placeholders_for_vars(mlp.get_params())
-                self.network_phs_meta_batch.append(network_phs)
+                self.network_phs_meta_batch = self._create_placeholders_for_vars(mlp.get_params())
 
                 mlp_meta_batch = MLP(name,
                                         output_dim=obs_space_dims,
                                         hidden_sizes=hidden_sizes,
                                         hidden_nonlinearity=hidden_nonlinearity,
                                         output_nonlinearity=output_nonlinearity,
-                                        params=network_phs,
+                                        params=self.network_phs_meta_batch,
                                         input_var=nn_input_per_task_batched,
                                         input_dim=obs_space_dims + action_space_dims,
                                         )
@@ -598,52 +597,17 @@ class MetaMLPDynamicsModel(Serializable):
         return adapted_policy_params_dict
 
 
-
-
-        # update_param_keys = list(params_var.keys())
-        
-        # def _compute_gradients(loss):
-        #     return tf.gradients(loss, [params_var[key] for key in update_param_keys])
-
-        # grads = tf.map_fn(_compute_gradients, loss, dtype=[tf.float32 for _ in update_param_keys])
-        # gradients = dict(zip(update_param_keys, grads))
-
-        # # Gradient descent
-        # adapted_policy_params = [params_var[key] - tf.multiply(self.inner_learning_rate, gradients[key])
-        #                   for key in update_param_keys]
-
-        # adapted_policy_params_dict = OrderedDict(zip(update_param_keys, adapted_policy_params))
-
-        # return adapted_policy_params_dict
-
-        # update_param_keys = list(params_var.keys())
-        # all_grads = [[] for _ in range(len(update_param_keys))]
-        # for i in range(self.meta_batch_size):
-        #     grads = tf.gradients(loss[i], [params_var[key] for key in update_param_keys])
-        #     # Append the gradient for each layer to its corresponding list
-        #     for j, grad in enumerate(grads):
-        #         all_grads[j].append(grad)
-        # gradients = dict(zip(update_param_keys, all_grads))
-
-        # # Gradient descent
-        # adapted_policy_params = [params_var[key] - tf.multiply(self.inner_learning_rate, gradients[key])
-        #                   for key in update_param_keys]
-
-        # adapted_policy_params_dict = OrderedDict(zip(update_param_keys, adapted_policy_params))
-
-        # return adapted_policy_params_dict
-
     def _create_placeholders_for_vars(self, vars):
         placeholders = OrderedDict()
         for key, var in vars.items():
-            placeholders[key] = tf.placeholder(tf.float32, shape=var.shape, name=key + '_ph')
+            placeholders[key] = tf.placeholder(tf.float32, shape=(self.meta_batch_size,) + tuple(var.shape), name=key + '_ph')
         return OrderedDict(placeholders)
 
     @property
     def network_params_feed_dict(self):
-        # return dict(list((self.network_phs_meta_batch[i][key], self._adapted_param_values[i][key])
-        #                  for key in self._adapted_param_values[0].keys() for i in range(self._num_adapted_models)))
-        return self._adapted_param_values
+        return dict(list((self.network_phs_meta_batch[i][key], self._adapted_param_values[i][key])
+                     for key in self._adapted_param_values.keys() for i in range(self.meta_batch_size)))
+
     
     def __getstate__(self):
         state = dict()
