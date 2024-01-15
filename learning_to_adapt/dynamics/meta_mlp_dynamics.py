@@ -113,8 +113,6 @@ class MetaMLPDynamicsModel(Serializable):
         post_delta_per_task_batched = tf.stack(post_delta_per_task)
 
 
-        pre_losses = []
-        post_losses = []
         self._adapted_params = []
 
         
@@ -129,15 +127,11 @@ class MetaMLPDynamicsModel(Serializable):
                             params=mlp.get_params())
 
             pre_delta_pred_batched = pre_mlp.output_var
-            self.pre_delta_pred_batched = pre_delta_pred_batched
-            self.pre_delta_per_task_batched = pre_delta_per_task_batched
-            self.pre_input_per_task_batched = pre_input_per_task_batched
-            # PROBABLY SHOULDN'T DO REDUCE MEAN HERE
+            
             self.delta_diff = pre_delta_per_task_batched - pre_delta_pred_batched
             self.squared_diff = tf.square(self.delta_diff)
-            self.correct_pre_loss = tf.reduce_mean(self.squared_diff, axis=[1,2])
-            self.pre_loss_actual = tf.reduce_mean(tf.square(pre_delta_per_task_batched - pre_delta_pred_batched), axis = 1)
-            adapted_params = self._adapt_sym(self.correct_pre_loss, pre_mlp.get_params())
+            pre_losses = tf.reduce_mean(self.squared_diff, axis=[1,2])
+            adapted_params = self._adapt_sym(pre_losses, pre_mlp.get_params())
             self._adapted_params = adapted_params
 
         with tf.variable_scope(name + '/post_model', reuse=tf.AUTO_REUSE):
@@ -151,17 +145,13 @@ class MetaMLPDynamicsModel(Serializable):
                             input_dim=obs_space_dims + action_space_dims)
             post_delta_pred_batched = post_mlp.output_var
 
-            old_post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis = 1)
-            correct_post_loss = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis=[1,2])
-
-
-            #SELF.PRE_LOSS IS ALREADY ONE VALUE NOW
-            # pre_losses.append(self.pre_loss_actual)
-            # post_losses.append(post_loss)
-
-            self.pre_loss = tf.reduce_mean(self.correct_pre_loss)
             
-            self.post_loss = tf.reduce_mean(correct_post_loss)
+            post_losses = tf.reduce_mean(tf.square(post_delta_per_task_batched - post_delta_pred_batched), axis=[1,2])
+
+
+            self.pre_loss = tf.reduce_mean(pre_losses)
+            
+            self.post_loss = tf.reduce_mean(post_losses)
             self.train_op = optimizer(self.learning_rate).minimize(self.post_loss)
 
         """ --------------------------- Post-update Inference Graph --------------------------- """
@@ -356,17 +346,17 @@ class MetaMLPDynamicsModel(Serializable):
         return pred_obs
 
     def _predict(self, obs, act):
-        # if self._adapted_param_values is not None:
-        #     sess = tf.get_default_session()
-        #     # obs, act = self._pad_inputs(obs, act)
-        #     obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
-        #     act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
-        #     feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
-        #     feed_dict.update(self.network_params_feed_dict)
-        #     delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
-        #     delta = np.concatenate(delta, axis=0)
-        # else:
-        delta = self.f_delta_pred(obs, act)
+        if self._adapted_param_values is not None:
+            sess = tf.get_default_session()
+            # obs, act = self._pad_inputs(obs, act)
+            obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
+            act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
+            feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
+            feed_dict.update(self.network_params_feed_dict)
+            delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
+            delta = np.concatenate(delta, axis=0)
+        else:
+            delta = self.f_delta_pred(obs, act)
         return delta
 
     def _pad_inputs(self, obs, act, obs_next=None):
@@ -405,7 +395,7 @@ class MetaMLPDynamicsModel(Serializable):
         self._prev_params = [nn.get_param_values() for nn in self._networks]
 
         sess = tf.get_default_session()
-        pre_loss, pre_delta_pred_batched, pre_delta_per_task_batched, pre_input_per_task_batched, diff, squared_diff, correct_pre_loss = sess.run([self.pre_loss_actual, self.pre_delta_pred_batched, self.pre_delta_per_task_batched, self.pre_input_per_task_batched, self.delta_diff, self.squared_diff, self.correct_pre_loss], feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
+        
         
         # Get all adapted networks.
         adapted_param_values_all = sess.run(self._adapted_params,
