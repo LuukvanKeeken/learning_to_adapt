@@ -354,7 +354,9 @@ class MetaMLPDynamicsModel(Serializable):
             act = np.reshape(act, (self._num_adapted_models, -1, act.shape[-1]))
             feed_dict = {self.post_update_obs_ph: obs, self.post_update_act_ph: act}
             feed_dict.update(self.network_params_feed_dict)
+            start_time = time.time()
             delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
+            print(time.time() - start_time)
             delta = np.concatenate(delta, axis=0)
         else:
             print('NON-ADAPTED')
