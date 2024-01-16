@@ -81,8 +81,8 @@ if __name__ == '__main__':
 
     config = {
                 # Environment
-                'env': HalfCheetahEnv,
-                'max_path_length': 1000,
+                'env': CartPoleEnv,
+                'max_path_length': 200,
                 'task': 'None',
                 #'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                 'num_cem_iters': 5,
 
                 # Training
-                'num_rollouts': 5,
+                'num_rollouts': 1,
                 'valid_split_ratio': 0.1,
                 'rolling_average_persitency': 0.99,
                 'initial_random_samples': True,
@@ -111,7 +111,7 @@ if __name__ == '__main__':
                 'adapt_batch_size': 16,
 
                 #  Other
-                'n_parallel': 5,
+                'n_parallel': 1,
                 'evaluate_agent': False,
                 'num_eval_episodes': 5,
                 'snapshot_mode': 'all',
