@@ -347,6 +347,7 @@ class MetaMLPDynamicsModel(Serializable):
 
     def _predict(self, obs, act):
         if self._adapted_param_values is not None:
+            print('ADAPTED')
             sess = tf.get_default_session()
             # obs, act = self._pad_inputs(obs, act)
             obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
@@ -356,6 +357,7 @@ class MetaMLPDynamicsModel(Serializable):
             delta = sess.run(self.post_update_delta[:self._num_adapted_models], feed_dict=feed_dict)
             delta = np.concatenate(delta, axis=0)
         else:
+            print('NON-ADAPTED')
             delta = self.f_delta_pred(obs, act)
         return delta
 

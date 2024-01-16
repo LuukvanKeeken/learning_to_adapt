@@ -81,8 +81,8 @@ if __name__ == '__main__':
 
     config = {
                 # Environment
-                'env': CartPoleEnv,
-                'max_path_length': 200,
+                'env': HalfCheetahEnv,
+                'max_path_length': 1000,
                 'task': 'None',
                 #'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
