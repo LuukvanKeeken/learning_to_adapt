@@ -360,7 +360,9 @@ class MetaMLPDynamicsModel(Serializable):
             delta = np.concatenate(delta, axis=0)
         else:
             print('NON-ADAPTED')
+            start_time = time.time()
             delta = self.f_delta_pred(obs, act)
+            print(time.time() - start_time)
         return delta
 
     def _pad_inputs(self, obs, act, obs_next=None):
