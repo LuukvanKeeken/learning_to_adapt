@@ -1,3 +1,4 @@
+import time
 from learning_to_adapt.policies.base import Policy
 from learning_to_adapt.utils.serializable import Serializable
 import numpy as np
@@ -118,7 +119,10 @@ class MPCController(Policy, Serializable):
 
         a = self.get_random_action(h * n * m).reshape((h, n * m, -1))
 
+        times = []
+
         for t in range(h):
+            start_time = time.time()
             if t == 0:
                 cand_a = a[t].reshape((m, n, -1))
                 observation = np.repeat(observations, n, axis=0)
@@ -130,7 +134,9 @@ class MPCController(Policy, Serializable):
                 rewards = self.unwrapped_env.reward(observation, a[t], next_observation)
             returns += self.discount ** t * rewards
             observation = next_observation
+            times.append(time.time() - start_time)
         returns = returns.reshape(m, n)
+        print(times)
         return cand_a[range(m), np.argmax(returns, axis=1)]
 
     def get_params_internal(self, **tags):

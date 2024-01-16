@@ -81,12 +81,12 @@ if __name__ == '__main__':
 
     config = {
                 # Environment
-                'env': HalfCheetahEnv,
-                'max_path_length': 1000,
+                'env': CartPoleEnv,
+                'max_path_length': 200,
                 'task': 'None',
                 #'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
-                 'n_itr': 1,
+                 'n_itr': 3,
                 'discount': 1.,
 
                 # Policy
@@ -102,13 +102,13 @@ if __name__ == '__main__':
                 'initial_random_samples': True,
 
                 # Dynamics Model
-                'meta_batch_size': 100,
+                'meta_batch_size': 10,
                 'hidden_nonlinearity_model': 'relu',
                 'learning_rate': 1e-3,
                 'inner_learning_rate': 0.01,
                 'hidden_sizes_model': (512, 512, 512),
-                'dynamic_model_epochs': 50,
-                'adapt_batch_size': 32,
+                'dynamic_model_epochs': 100,
+                'adapt_batch_size': 16,
 
                 #  Other
                 'n_parallel': 5,
@@ -117,9 +117,9 @@ if __name__ == '__main__':
                 'snapshot_mode': 'all',
 
     }
-    config['exp_name'] = f'gpudev_grbal_halfcheetahenv_{config["n_itr"]}itr_task'#{config["task"]}_polelengthrange_0.5_2.0'
+    config['exp_name'] = f'gpudev_grbal_cartpoleenv_{config["n_itr"]}itr_taskNone'#{config["task"]}_polelengthrange_0.5_2.0'
     profiler = cProfile.Profile()
     profiler.enable()
     run_experiment(config)
     profiler.disable()
-    stats = pstats.Stats(profiler).dump_stats('profile_after_gpu_HC')
+    stats = pstats.Stats(profiler).dump_stats('profile_after_gpu_cartpole')
