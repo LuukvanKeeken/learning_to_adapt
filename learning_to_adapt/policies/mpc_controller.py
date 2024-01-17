@@ -119,7 +119,7 @@ class MPCController(Policy, Serializable):
 
         a = self.get_random_action(h * n * m).reshape((h, n * m, -1))
 
-        times = []
+        # times = []
 
         for t in range(h):
             # start_time = time.time()
@@ -136,7 +136,7 @@ class MPCController(Policy, Serializable):
             observation = next_observation
             # times.append(time.time() - start_time)
         returns = returns.reshape(m, n)
-        print(times)
+        # print(times)
         return cand_a[range(m), np.argmax(returns, axis=1)]
 
     def get_params_internal(self, **tags):
