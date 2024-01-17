@@ -1,4 +1,5 @@
 from copy import deepcopy
+from itertools import chain
 import random
 import gym
 from learning_to_adapt.dynamics.core.layers import MLP
@@ -9,6 +10,7 @@ from learning_to_adapt.utils.serializable import Serializable
 from learning_to_adapt.utils import tensor_utils
 from learning_to_adapt.logger import logger
 import time
+from learning_to_adapt.dynamics.core.utils import create_keras_mlp
 
 
 class MetaMLPDynamicsModel(Serializable):
@@ -71,6 +73,15 @@ class MetaMLPDynamicsModel(Serializable):
 
         hidden_nonlinearity = self._activations[hidden_nonlinearity]
         output_nonlinearity = self._activations[output_nonlinearity]
+
+
+        self.inference_model = create_keras_mlp(input_dim=obs_space_dims + action_space_dims,
+                                                output_dim=obs_space_dims,
+                                                hidden_sizes=hidden_sizes,
+                                                hidden_nonlinearity=hidden_nonlinearity,
+                                                output_nonlinearity=output_nonlinearity)
+
+
 
         """ ------------------ Pre-Update Graph + Adaptation ----------------------- """
         with tf.variable_scope(name):
@@ -345,8 +356,35 @@ class MetaMLPDynamicsModel(Serializable):
 
         return pred_obs
 
+    
+    def set_inference_model_weights(self):
+        # it = iter(self._adapted_param_values)
+        # weights = []
+
+        # for k, b in zip(it, it):
+        #     kernels = self._adapted_param_values[k]
+        #     biases = self._adapted_param_values[b]
+
+        #     for i in range(len(kernels)):
+        #         weights.append(kernels[i])
+        #         weights.append(biases[i])
+
+        # self.inference_model.set_weights(weights)
+        it = iter(self._adapted_param_values)
+
+        weights = list(chain.from_iterable((self._adapted_param_values[k][i], self._adapted_param_values[b][i])
+                                            for k, b in zip(it, it) for i in range(len(self._adapted_param_values[k]))))
+
+        self.inference_model.set_weights(weights)
+
+
+
+
     def _predict(self, obs, act):
         if self._adapted_param_values is not None:
+            start_time = time.time()
+            self.set_inference_model_weights()
+            print(time.time() - start_time)
             print('ADAPTED')
             sess = tf.get_default_session()
             # obs, act = self._pad_inputs(obs, act)

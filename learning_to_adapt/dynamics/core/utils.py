@@ -1,5 +1,8 @@
 import tensorflow as tf
 import numpy as np
+from tensorflow.keras import Model, Input
+from tensorflow.keras.layers import Dense, BatchNormalization
+from tensorflow.keras.initializers import Zeros, glorot_normal
 
 
 def create_dnn(name,
@@ -70,6 +73,83 @@ def create_dnn(name,
         output_var = tf.reshape(x, (-1,) + output_dim)
 
     return input_var, output_var
+
+
+def create_keras_mlp(output_dim,
+                     hidden_sizes,
+                     hidden_nonlinearity,
+                     output_nonlinearity,
+                     input_dim=None,
+                     batch_normalization=False,
+                     ):
+    """
+    Creates a MLP network using tf.keras.Model
+    Args:
+        output_dim (int): dimension of the output
+        hidden_sizes (tuple): tuple with the hidden sizes of the fully connected network
+        hidden_nonlinearity (tf): non-linearity for the activations in the hidden layers
+        output_nonlinearity (tf or None): output non-linearity. None results in no non-linearity being applied
+        input_dim (tuple): dimensions of the input variable e.g. (None, action_dim)
+        batch_normalization (bool): whether to use batch normalization
+
+    Returns:
+        model (tf.keras.Model): A Keras model instance
+    """
+
+    assert input_dim is not None
+
+    def structure(input, model_idx):
+        x = input
+
+        for idx, hidden_size in enumerate(hidden_sizes):
+            if batch_normalization:
+                x = BatchNormalization()(x)
+            x = Dense(hidden_size,
+                    activation=hidden_nonlinearity,
+                    kernel_initializer=glorot_normal(),
+                    bias_initializer=Zeros(),
+                    name=f'model_{model_idx}_hidden_{idx}')(x)
+
+        if batch_normalization:
+            x = BatchNormalization()(x)
+
+
+        output_var = Dense(output_dim,
+                       activation=output_nonlinearity,
+                       kernel_initializer=glorot_normal(),
+                       bias_initializer=Zeros(),
+                       name=f'model_{model_idx}_output')(x)
+
+        return output_var
+
+    inputs = []
+    outputs = []
+
+    for i in range(5):
+        input = Input(shape=input_dim, dtype='float32')
+        inputs.append(input)
+        output = structure(input, i)
+        outputs.append(output)
+
+    return Model(inputs=inputs, outputs=outputs)
+    
+    
+    # input_var = Input(shape=input_dim, dtype='float32')
+    
+
+    # output_var = Dense(output_dim,
+    #                    activation=output_nonlinearity,
+    #                    kernel_initializer=glorot_normal(),
+    #                    bias_initializer=Zeros(),
+    #                    name='output')(x)
+
+    # # model = Model(inputs=input_var, outputs=output_var)
+    # input_vars = [input_var for _ in range(5)]
+    # output_vars = [output_var for _ in range(5)]
+    # model = Model(inputs=input_vars, outputs=output_vars)
+
+    # return model
+
 
 
 def create_mlp(output_dim,

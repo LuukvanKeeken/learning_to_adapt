@@ -96,7 +96,7 @@ if __name__ == '__main__':
                 'num_cem_iters': 5,
 
                 # Training
-                'num_rollouts': 1,
+                'num_rollouts': 5,
                 'valid_split_ratio': 0.1,
                 'rolling_average_persitency': 0.99,
                 'initial_random_samples': True,
@@ -111,7 +111,7 @@ if __name__ == '__main__':
                 'adapt_batch_size': 16,
 
                 #  Other
-                'n_parallel': 1,
+                'n_parallel': 5,
                 'evaluate_agent': False,
                 'num_eval_episodes': 5,
                 'snapshot_mode': 'all',
@@ -122,4 +122,4 @@ if __name__ == '__main__':
     profiler.enable()
     run_experiment(config)
     profiler.disable()
-    stats = pstats.Stats(profiler).dump_stats('profile_after_gpu_cartpole')
+    stats = pstats.Stats(profiler).dump_stats('profile_after_gpu_cartpole_throwaway')
