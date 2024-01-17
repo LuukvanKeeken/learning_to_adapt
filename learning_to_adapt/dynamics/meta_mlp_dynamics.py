@@ -450,19 +450,19 @@ class MetaMLPDynamicsModel(Serializable):
         
         
         # Get all adapted networks.
-        start_time = time.time()
+        # start_time = time.time()
         adapted_param_values_all = sess.run(self._adapted_params,
                                               feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
-        print(f"GETTING ADAPTED PARAMS: {time.time() - start_time}")
+        # print(f"GETTING ADAPTED PARAMS: {time.time() - start_time}")
 
         # For each layer type, get only the first num_adapted_models of layers.
         self._adapted_param_values = OrderedDict()
         for key, value in adapted_param_values_all.items():
             self._adapted_param_values[key] = value[:self._num_adapted_models]
 
-        start_time = time.time()
+        # start_time = time.time()
         self.set_inference_model_weights()
-        print(f"ADAPTTIME: {time.time() - start_time}")
+        # print(f"ADAPTTIME: {time.time() - start_time}")
         
 
     def switch_to_pre_adapt(self):
