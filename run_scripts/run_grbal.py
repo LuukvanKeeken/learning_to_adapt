@@ -21,7 +21,7 @@ def run_experiment(config):
     logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode=config['snapshot_mode'])
     json.dump(config, open(exp_dir + '/params.json', 'w'), indent=2, sort_keys=True, cls=ClassEncoder)
 
-    env = normalize(config['env'](reset_every_episode=True, task=config['task']))#, task_args=config['task_args']))
+    env = normalize(config['env'](reset_every_episode=True, task=config['task'], task_args=config['task_args']))
 
     dynamics_model = MetaMLPDynamicsModel(
         name="dyn_model",
@@ -83,10 +83,10 @@ if __name__ == '__main__':
                 # Environment
                 'env': CartPoleEnv,
                 'max_path_length': 200,
-                'task': 'None',
-                #'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
+                'task': 'range',
+                'task_args': {'pole_length_range': (0.5, 2.0), 'pole_mass_range': (0.1, 0.1), 'force_mag_range': (10.0, 10.0)},
                 'normalize': True,
-                 'n_itr': 3,
+                 'n_itr': 50,
                 'discount': 1.,
 
                 # Policy
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                 'snapshot_mode': 'all',
 
     }
-    config['exp_name'] = f'gpudev_grbal_cartpoleenv_{config["n_itr"]}itr_taskNone'#{config["task"]}_polelengthrange_0.5_2.0'
+    config['exp_name'] = f'gpudev_grbal_cartpoleenv_{config["n_itr"]}itr_task{config["task"]}_polelengthrange_0.5_2.0'
     profiler = cProfile.Profile()
     profiler.enable()
     run_experiment(config)
