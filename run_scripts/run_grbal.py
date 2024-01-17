@@ -102,7 +102,7 @@ if __name__ == '__main__':
                 'initial_random_samples': True,
 
                 # Dynamics Model
-                'meta_batch_size': 10,
+                'meta_batch_size': 100,
                 'hidden_nonlinearity_model': 'relu',
                 'learning_rate': 1e-3,
                 'inner_learning_rate': 0.01,

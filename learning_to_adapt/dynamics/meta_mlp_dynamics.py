@@ -173,8 +173,8 @@ class MetaMLPDynamicsModel(Serializable):
             # nn_input_per_task = tf.split(self.nn_input, self._adapted_models_num, axis=0)
             # nn_input_per_task_batched = tf.stack(nn_input_per_task)
 
-            self.post_update_obs_ph = tf.placeholder(tf.float32, shape = (None, None, obs_space_dims))
-            self.post_update_act_ph = tf.placeholder(tf.float32, shape = (None, None, action_space_dims))
+            self.post_update_obs_ph = tf.placeholder(tf.float32, shape = (self.num_rollouts, None, obs_space_dims))
+            self.post_update_act_ph = tf.placeholder(tf.float32, shape = (self.num_rollouts, None, action_space_dims))
 
             self.post_update_nn_input = tf.concat([self.post_update_obs_ph, self.post_update_act_ph], axis=2)
 
@@ -281,10 +281,13 @@ class MetaMLPDynamicsModel(Serializable):
             for _ in range(num_steps_per_epoch):
                 obs_batch, act_batch, delta_batch = self._get_batch(train=True)
 
+                start_time = time.time()
                 pre_batch_loss, post_batch_loss, _ = sess.run([self.pre_loss, self.post_loss, self.train_op],
                                                                feed_dict={self.obs_ph: obs_batch,
                                                                self.act_ph: act_batch,
                                                                self.delta_ph: delta_batch})
+
+                print(f"ONE STEP: {time.time() - start_time}")
 
                 pre_batch_losses.append(pre_batch_loss)
                 post_batch_losses.append(post_batch_loss)
@@ -382,9 +385,13 @@ class MetaMLPDynamicsModel(Serializable):
 
     def _predict(self, obs, act):
         if self._adapted_param_values is not None:
+            
+            all_inputs = np.concatenate([obs, act], axis=1)
+            all_inputs = np.split(all_inputs, self._num_adapted_models, axis=0)
             start_time = time.time()
-            self.set_inference_model_weights()
-            print(time.time() - start_time)
+            delta_new = self.inference_model.predict(all_inputs)
+            delta_new = np.concatenate(delta_new, axis=0)
+            print(f"Inference model: {time.time() - start_time}")
             print('ADAPTED')
             sess = tf.get_default_session()
             # obs, act = self._pad_inputs(obs, act)
@@ -442,13 +449,19 @@ class MetaMLPDynamicsModel(Serializable):
         
         
         # Get all adapted networks.
+        start_time = time.time()
         adapted_param_values_all = sess.run(self._adapted_params,
                                               feed_dict={self.obs_ph: obs, self.act_ph: act, self.delta_ph: delta})
-        
+        print(f"GETTING ADAPTED PARAMS: {time.time() - start_time}")
+
         # For each layer type, get only the first num_adapted_models of layers.
         self._adapted_param_values = OrderedDict()
         for key, value in adapted_param_values_all.items():
             self._adapted_param_values[key] = value[:self._num_adapted_models]
+
+        start_time = time.time()
+        self.set_inference_model_weights()
+        print(f"ADAPTTIME: {time.time() - start_time}")
         
 
     def switch_to_pre_adapt(self):
@@ -641,7 +654,7 @@ class MetaMLPDynamicsModel(Serializable):
     def _create_placeholders_for_vars(self, vars):
         placeholders = OrderedDict()
         for key, var in vars.items():
-            placeholders[key] = tf.placeholder(tf.float32, shape=(None,) + tuple(var.shape), name=key + '_ph')
+            placeholders[key] = tf.placeholder(tf.float32, shape=(self.num_rollouts,) + tuple(var.shape), name=key + '_ph')
         return OrderedDict(placeholders)
 
     @property

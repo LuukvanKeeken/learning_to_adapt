@@ -366,9 +366,15 @@ def forward_mlp(output_dim,
                 x_shape_list = [x.shape[0].value, x.shape[-1].value, sizes[idx]]
                 assert param_shape_list == x_shape_list or (param_shape_list[0] is None and x_shape_list[0] is None and param_shape_list[1:] == x_shape_list[1:]), "param has to be a batch of layers, representing multiple networks"
                 # assert param.shape == (x.shape[0], x.shape[-1], sizes[idx]) or (param.shape[0] == None and x.shape[0] == None and param.shape[1:] == (x.shape[-1], sizes[idx])), "param has to be a batch of layers, representing multiple networks"
-                # x = tf.einsum('abc,acd->abd', x, param)
-                x = tf.vectorized_map(tensordot_fn, (x, param))
-                x.set_shape([param.shape[0], None, sizes[idx]])
+                # x = tf.einsum('abc,acd->abd', x, param) 
+                # x = tf.vectorized_map(tensordot_fn, (x, param))
+                # x.set_shape([param.shape[0], None, sizes[idx]])
+                # x = tf.tensordot(x, param, axes=[[1,2], [1,2]])
+                # x_reshaped = tf.reshape(x, [-1, x.shape[-1]])
+                # param_reshaped = tf.reshape(param, [param.shape[1], -1])
+                # result = tf.matmul(x_reshaped, param_reshaped)
+                # x = tf.reshape(result, [int(x.shape[0]), -1, int(param.shape[-1])])
+                x = tf.matmul(x, param)
         elif "bias" in name:
             if len(param.shape) == 1:
                 assert param.shape == (sizes[idx],)
