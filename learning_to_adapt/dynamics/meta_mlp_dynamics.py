@@ -388,12 +388,12 @@ class MetaMLPDynamicsModel(Serializable):
             
             all_inputs = np.concatenate([obs, act], axis=1)
             all_inputs = np.split(all_inputs, self._num_adapted_models, axis=0)
-            start_time = time.time()
+            # start_time = time.time()
             delta_new = self.inference_model.predict(all_inputs)
             delta_new = np.concatenate(delta_new, axis=0)
             delta = delta_new
-            print(f"Inference model: {time.time() - start_time}")
-            print('ADAPTED')
+            # print(f"Inference model: {time.time() - start_time}")
+            # print('ADAPTED')
             # sess = tf.get_default_session()
             # # obs, act = self._pad_inputs(obs, act)
             # obs = np.reshape(obs, (self._num_adapted_models, -1, obs.shape[-1]))
@@ -405,10 +405,10 @@ class MetaMLPDynamicsModel(Serializable):
             # print(time.time() - start_time)
             # delta = np.concatenate(delta, axis=0)
         else:
-            print('NON-ADAPTED')
-            start_time = time.time()
+            # print('NON-ADAPTED')
+            # start_time = time.time()
             delta = self.f_delta_pred(obs, act)
-            print(time.time() - start_time)
+            # print(time.time() - start_time)
         return delta
 
     def _pad_inputs(self, obs, act, obs_next=None):
