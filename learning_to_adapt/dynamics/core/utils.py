@@ -377,7 +377,7 @@ def forward_mlp(output_dim,
                 # param_reshaped = tf.reshape(param, [param.shape[0]*param.shape[1], -1])
                 # result = tf.matmul(x_reshaped, param_reshaped)
                 # x = tf.reshape(result, [int(x.shape[0]), int(x.shape[1]), -1])
-                # x = tf.matmul(x, param)
+                x = tf.matmul(x, param)
         elif "bias" in name:
             if len(param.shape) == 1:
                 assert param.shape == (sizes[idx],)
