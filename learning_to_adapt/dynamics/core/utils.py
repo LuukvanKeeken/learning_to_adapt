@@ -361,6 +361,9 @@ def forward_mlp(output_dim,
             if len(param.shape) == 2:
                 assert param.shape == (x.shape[-1], sizes[idx])
                 x = tf.tensordot(x, param, axes=[[2], [0]])
+                # x_reshaped = tf.reshape(x, [-1, int(x.shape[-1])])
+                # result = tf.matmul(x_reshaped, param)
+                # x = tf.reshape(result, [int(x.shape[0]), -1, sizes[idx]])
             else:
                 param_shape_list = param.shape.as_list()
                 x_shape_list = [x.shape[0].value, x.shape[-1].value, sizes[idx]]
@@ -371,10 +374,10 @@ def forward_mlp(output_dim,
                 # x.set_shape([param.shape[0], None, sizes[idx]])
                 # x = tf.tensordot(x, param, axes=[[1,2], [1,2]])
                 # x_reshaped = tf.reshape(x, [-1, x.shape[-1]])
-                # param_reshaped = tf.reshape(param, [param.shape[1], -1])
+                # param_reshaped = tf.reshape(param, [param.shape[0]*param.shape[1], -1])
                 # result = tf.matmul(x_reshaped, param_reshaped)
-                # x = tf.reshape(result, [int(x.shape[0]), -1, int(param.shape[-1])])
-                x = tf.matmul(x, param)
+                # x = tf.reshape(result, [int(x.shape[0]), int(x.shape[1]), -1])
+                # x = tf.matmul(x, param)
         elif "bias" in name:
             if len(param.shape) == 1:
                 assert param.shape == (sizes[idx],)

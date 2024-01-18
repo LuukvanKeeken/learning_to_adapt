@@ -7,7 +7,7 @@ import os
 
 class HalfCheetahEnv(MujocoEnv, Serializable):
 
-    def __init__(self, task='None', reset_every_episode=False):
+    def __init__(self, task='cripple', reset_every_episode=True):
         Serializable.quick_init(self, locals())
         self.cripple_mask = None
         self.reset_every_episode = reset_every_episode
