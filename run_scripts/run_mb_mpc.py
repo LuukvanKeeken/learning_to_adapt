@@ -73,7 +73,7 @@ if __name__ == '__main__':
     config = {
             # Environment
             'env': CartPoleEnv,
-            'task': None,
+            'task': 'None',
 
             # Policy
             'n_candidates': 500,
@@ -88,9 +88,9 @@ if __name__ == '__main__':
             'initial_random_samples': True,
 
             # Training
-            'n_itr': 50,
+            'n_itr': 15,
             'learning_rate': 1e-3,
-            'batch_size': 128,
+            'batch_size': 256,
             'dynamic_model_epochs': 100,
             'valid_split_ratio': 0.1,
             'rolling_average_persitency': 0.99,
@@ -107,4 +107,6 @@ if __name__ == '__main__':
             'snapshot_mode': 'all',
             }
 
-    run_experiment(config)
+    for i in range(1, 6):
+        config['exp_name'] = f'MBMPC_cartpole_{config["n_itr"]}itr_task{config["task"]}_run{i}'
+        run_experiment(config)
