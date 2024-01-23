@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     
     paths = ['data/mb_mpc/MBMPC_cartpole_15itr_taskNone_run1/', 'data/mb_mpc/MBMPC_cartpole_15itr_taskNone_run2/', 'data/mb_mpc/MBMPC_cartpole_15itr_taskNone_run3/', 'data/mb_mpc/MBMPC_cartpole_15itr_taskNone_run4/', 'data/mb_mpc/MBMPC_cartpole_15itr_taskNone_run5/']
-
+    
     for path in paths:
         print(f"Now evaluating {path}")
        # smallest_postloss_idx = find_smallest_postloss_index(path)
