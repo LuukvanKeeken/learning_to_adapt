@@ -17,7 +17,7 @@ EXP_NAME = 'mb_mpc'
 def run_experiment(config):
     tf.reset_default_graph()
     exp_dir = os.getcwd() + '/data/' + EXP_NAME + '/' + config.get('exp_name', '')
-    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode='last')
+    logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode=config['snapshot_mode'])
     json.dump(config, open(exp_dir + '/params.json', 'w'), indent=2, sort_keys=True, cls=ClassEncoder)
 
     env = normalize(config['env'](reset_every_episode=True, task=config['task']))
