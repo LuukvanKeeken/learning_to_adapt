@@ -70,18 +70,18 @@ if __name__ == '__main__':
 
     config = {
             # Environment
-            'env': HalfCheetahEnv,
+            'env': CartPoleEnv,
             'task': None,
 
             # Policy
-            'n_candidates': 2000,
-            'horizon': 20,
+            'n_candidates': 500,
+            'horizon': 10,
             'use_cem': False,
             'num_cem_iters': 5,
             'discount': 1.,
 
             # Sampling
-            'max_path_length': 100,
+            'max_path_length': 200,
             'num_rollouts': 10,
             'initial_random_samples': True,
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
             'rolling_average_persitency': 0.99,
 
             # Dynamics Model
-            'hidden_sizes': (512, 512),
+            'hidden_sizes': (512, 512, 512),
             'hidden_nonlinearity': 'relu',
 
 

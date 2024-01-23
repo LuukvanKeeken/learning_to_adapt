@@ -91,6 +91,8 @@ class MLPDynamicsModel(Serializable):
     def fit(self, obs, act, obs_next, epochs=1000, compute_normalization=True,
             valid_split_ratio=None, rolling_average_persitency=None, verbose=False, log_tabular=False):
 
+        if isinstance(act.shape, tuple) and len(act.shape) == 1:
+            act = np.reshape(act, (-1, 1))
 
         assert obs.ndim == 2 and obs.shape[1] == self.obs_space_dims
         assert obs_next.ndim == 2 and obs_next.shape[1] == self.obs_space_dims
@@ -138,6 +140,7 @@ class MLPDynamicsModel(Serializable):
         epoch_times = []
 
         """ ------- Looping over training epochs ------- """
+        t0 = time.time()
         for epoch in range(epochs):
 
             # initialize data queue
@@ -184,6 +187,7 @@ class MLPDynamicsModel(Serializable):
                     valid_loss_rolling_average = rolling_average_persitency*valid_loss_rolling_average \
                                                  + (1.0-rolling_average_persitency)*valid_loss
 
+                    epoch_times.append(time.time() - t0)
                     if verbose:
                         logger.log("Training DynamicsModel - finished epoch %i --"
                                    "train loss: %.4f  valid loss: %.4f  valid_loss_mov_avg: %.4f  epoch time: %.2f"
