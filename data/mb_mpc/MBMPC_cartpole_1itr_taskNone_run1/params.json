@@ -1,0 +1,31 @@
+{
+  "batch_size": 256,
+  "discount": 1.0,
+  "dynamic_model_epochs": 100,
+  "env": {
+    "$class": "learning_to_adapt.envs.cartpole_env.CartPoleEnv"
+  },
+  "evaluate_agent": true,
+  "exp_name": "MBMPC_cartpole_1itr_taskNone_run1",
+  "hidden_nonlinearity": "relu",
+  "hidden_sizes": [
+    512,
+    512,
+    512
+  ],
+  "horizon": 10,
+  "initial_random_samples": true,
+  "learning_rate": 0.001,
+  "max_path_length": 200,
+  "n_candidates": 500,
+  "n_itr": 1,
+  "n_parallel": 5,
+  "num_cem_iters": 5,
+  "num_eval_episodes": 25,
+  "num_rollouts": 10,
+  "rolling_average_persitency": 0.99,
+  "snapshot_mode": "all",
+  "task": "None",
+  "use_cem": false,
+  "valid_split_ratio": 0.1
+}

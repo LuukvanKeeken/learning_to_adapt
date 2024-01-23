@@ -1,0 +1,132 @@
+Logging to /workspace/data/mb_mpc/MBMPC_cartpole_1itr_taskNone_run2
+
+ ---------------- Iteration 0 ----------------
+Obtaining random samples from the environment...
+Processing environment samples...
+Training dynamics model for 100 epochs ...
+Training DynamicsModel - finished epoch 0 --train loss: 0.4020  valid loss: 0.0933  valid_loss_mov_avg: 0.1395  epoch time: 0.09
+Training DynamicsModel - finished epoch 1 --train loss: 0.0584  valid loss: 0.0368  valid_loss_mov_avg: 0.1385  epoch time: 0.03
+Training DynamicsModel - finished epoch 2 --train loss: 0.0300  valid loss: 0.0083  valid_loss_mov_avg: 0.1372  epoch time: 0.03
+Training DynamicsModel - finished epoch 3 --train loss: 0.0140  valid loss: 0.0056  valid_loss_mov_avg: 0.1359  epoch time: 0.04
+Training DynamicsModel - finished epoch 4 --train loss: 0.0069  valid loss: 0.0063  valid_loss_mov_avg: 0.1346  epoch time: 0.03
+Training DynamicsModel - finished epoch 5 --train loss: 0.0043  valid loss: 0.0042  valid_loss_mov_avg: 0.1333  epoch time: 0.04
+Training DynamicsModel - finished epoch 6 --train loss: 0.0028  valid loss: 0.0032  valid_loss_mov_avg: 0.1320  epoch time: 0.04
+Training DynamicsModel - finished epoch 7 --train loss: 0.0021  valid loss: 0.0020  valid_loss_mov_avg: 0.1307  epoch time: 0.04
+Training DynamicsModel - finished epoch 8 --train loss: 0.0016  valid loss: 0.0016  valid_loss_mov_avg: 0.1294  epoch time: 0.04
+Training DynamicsModel - finished epoch 9 --train loss: 0.0012  valid loss: 0.0013  valid_loss_mov_avg: 0.1281  epoch time: 0.04
+Training DynamicsModel - finished epoch 10 --train loss: 0.0010  valid loss: 0.0010  valid_loss_mov_avg: 0.1268  epoch time: 0.04
+Training DynamicsModel - finished epoch 11 --train loss: 0.0008  valid loss: 0.0009  valid_loss_mov_avg: 0.1256  epoch time: 0.04
+Training DynamicsModel - finished epoch 12 --train loss: 0.0006  valid loss: 0.0007  valid_loss_mov_avg: 0.1243  epoch time: 0.04
+Training DynamicsModel - finished epoch 13 --train loss: 0.0005  valid loss: 0.0005  valid_loss_mov_avg: 0.1231  epoch time: 0.04
+Training DynamicsModel - finished epoch 14 --train loss: 0.0004  valid loss: 0.0004  valid_loss_mov_avg: 0.1218  epoch time: 0.04
+Training DynamicsModel - finished epoch 15 --train loss: 0.0003  valid loss: 0.0003  valid_loss_mov_avg: 0.1206  epoch time: 0.04
+Training DynamicsModel - finished epoch 16 --train loss: 0.0002  valid loss: 0.0003  valid_loss_mov_avg: 0.1194  epoch time: 0.04
+Training DynamicsModel - finished epoch 17 --train loss: 0.0002  valid loss: 0.0002  valid_loss_mov_avg: 0.1182  epoch time: 0.04
+Training DynamicsModel - finished epoch 18 --train loss: 0.0002  valid loss: 0.0002  valid_loss_mov_avg: 0.1171  epoch time: 0.04
+Training DynamicsModel - finished epoch 19 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1159  epoch time: 0.04
+Training DynamicsModel - finished epoch 20 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1147  epoch time: 0.04
+Training DynamicsModel - finished epoch 21 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1136  epoch time: 0.04
+Training DynamicsModel - finished epoch 22 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1124  epoch time: 0.04
+Training DynamicsModel - finished epoch 23 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1113  epoch time: 0.04
+Training DynamicsModel - finished epoch 24 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1102  epoch time: 0.04
+Training DynamicsModel - finished epoch 25 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1091  epoch time: 0.04
+Training DynamicsModel - finished epoch 26 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1080  epoch time: 0.04
+Training DynamicsModel - finished epoch 27 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1069  epoch time: 0.04
+Training DynamicsModel - finished epoch 28 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.1059  epoch time: 0.04
+Training DynamicsModel - finished epoch 29 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1048  epoch time: 0.04
+Training DynamicsModel - finished epoch 30 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.1038  epoch time: 0.04
+Training DynamicsModel - finished epoch 31 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.1027  epoch time: 0.04
+Training DynamicsModel - finished epoch 32 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.1017  epoch time: 0.04
+Training DynamicsModel - finished epoch 33 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.1007  epoch time: 0.04
+Training DynamicsModel - finished epoch 34 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0997  epoch time: 0.04
+Training DynamicsModel - finished epoch 35 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0987  epoch time: 0.04
+Training DynamicsModel - finished epoch 36 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0977  epoch time: 0.04
+Training DynamicsModel - finished epoch 37 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0967  epoch time: 0.04
+Training DynamicsModel - finished epoch 38 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0958  epoch time: 0.04
+Training DynamicsModel - finished epoch 39 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0948  epoch time: 0.04
+Training DynamicsModel - finished epoch 40 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0938  epoch time: 0.04
+Training DynamicsModel - finished epoch 41 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0929  epoch time: 0.04
+Training DynamicsModel - finished epoch 42 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0920  epoch time: 0.04
+Training DynamicsModel - finished epoch 43 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0911  epoch time: 0.04
+Training DynamicsModel - finished epoch 44 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0902  epoch time: 0.04
+Training DynamicsModel - finished epoch 45 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0893  epoch time: 0.04
+Training DynamicsModel - finished epoch 46 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0884  epoch time: 0.04
+Training DynamicsModel - finished epoch 47 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0875  epoch time: 0.04
+Training DynamicsModel - finished epoch 48 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0866  epoch time: 0.04
+Training DynamicsModel - finished epoch 49 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0857  epoch time: 0.04
+Training DynamicsModel - finished epoch 50 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0849  epoch time: 0.04
+Training DynamicsModel - finished epoch 51 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0840  epoch time: 0.04
+Training DynamicsModel - finished epoch 52 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0832  epoch time: 0.04
+Training DynamicsModel - finished epoch 53 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0824  epoch time: 0.04
+Training DynamicsModel - finished epoch 54 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0815  epoch time: 0.04
+Training DynamicsModel - finished epoch 55 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0807  epoch time: 0.04
+Training DynamicsModel - finished epoch 56 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0799  epoch time: 0.04
+Training DynamicsModel - finished epoch 57 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0791  epoch time: 0.04
+Training DynamicsModel - finished epoch 58 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0783  epoch time: 0.04
+Training DynamicsModel - finished epoch 59 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0775  epoch time: 0.04
+Training DynamicsModel - finished epoch 60 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0768  epoch time: 0.04
+Training DynamicsModel - finished epoch 61 --train loss: 0.0002  valid loss: 0.0003  valid_loss_mov_avg: 0.0760  epoch time: 0.04
+Training DynamicsModel - finished epoch 62 --train loss: 0.0002  valid loss: 0.0001  valid_loss_mov_avg: 0.0752  epoch time: 0.04
+Training DynamicsModel - finished epoch 63 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0745  epoch time: 0.04
+Training DynamicsModel - finished epoch 64 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0737  epoch time: 0.04
+Training DynamicsModel - finished epoch 65 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0730  epoch time: 0.04
+Training DynamicsModel - finished epoch 66 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0723  epoch time: 0.04
+Training DynamicsModel - finished epoch 67 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0716  epoch time: 0.04
+Training DynamicsModel - finished epoch 68 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0708  epoch time: 0.04
+Training DynamicsModel - finished epoch 69 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0701  epoch time: 0.04
+Training DynamicsModel - finished epoch 70 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0694  epoch time: 0.04
+Training DynamicsModel - finished epoch 71 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0687  epoch time: 0.04
+Training DynamicsModel - finished epoch 72 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0681  epoch time: 0.04
+Training DynamicsModel - finished epoch 73 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0674  epoch time: 0.04
+Training DynamicsModel - finished epoch 74 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0667  epoch time: 0.04
+Training DynamicsModel - finished epoch 75 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0660  epoch time: 0.04
+Training DynamicsModel - finished epoch 76 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0654  epoch time: 0.04
+Training DynamicsModel - finished epoch 77 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0647  epoch time: 0.04
+Training DynamicsModel - finished epoch 78 --train loss: 0.0001  valid loss: 0.0003  valid_loss_mov_avg: 0.0641  epoch time: 0.04
+Training DynamicsModel - finished epoch 79 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0634  epoch time: 0.04
+Training DynamicsModel - finished epoch 80 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0628  epoch time: 0.04
+Training DynamicsModel - finished epoch 81 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0622  epoch time: 0.04
+Training DynamicsModel - finished epoch 82 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0616  epoch time: 0.04
+Training DynamicsModel - finished epoch 83 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0609  epoch time: 0.04
+Training DynamicsModel - finished epoch 84 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0603  epoch time: 0.04
+Training DynamicsModel - finished epoch 85 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0597  epoch time: 0.04
+Training DynamicsModel - finished epoch 86 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0591  epoch time: 0.04
+Training DynamicsModel - finished epoch 87 --train loss: 0.0000  valid loss: 0.0000  valid_loss_mov_avg: 0.0585  epoch time: 0.04
+Training DynamicsModel - finished epoch 88 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0580  epoch time: 0.04
+Training DynamicsModel - finished epoch 89 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0574  epoch time: 0.04
+Training DynamicsModel - finished epoch 90 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0568  epoch time: 0.04
+Training DynamicsModel - finished epoch 91 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0562  epoch time: 0.04
+Training DynamicsModel - finished epoch 92 --train loss: 0.0000  valid loss: 0.0001  valid_loss_mov_avg: 0.0557  epoch time: 0.04
+Training DynamicsModel - finished epoch 93 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0551  epoch time: 0.04
+Training DynamicsModel - finished epoch 94 --train loss: 0.0001  valid loss: 0.0000  valid_loss_mov_avg: 0.0546  epoch time: 0.04
+Training DynamicsModel - finished epoch 95 --train loss: 0.0001  valid loss: 0.0002  valid_loss_mov_avg: 0.0540  epoch time: 0.04
+Training DynamicsModel - finished epoch 96 --train loss: 0.0001  valid loss: 0.0002  valid_loss_mov_avg: 0.0535  epoch time: 0.04
+Training DynamicsModel - finished epoch 97 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0530  epoch time: 0.04
+Training DynamicsModel - finished epoch 98 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0524  epoch time: 0.04
+Training DynamicsModel - finished epoch 99 --train loss: 0.0001  valid loss: 0.0001  valid_loss_mov_avg: 0.0519  epoch time: 0.04
+Stopping Training of Model since its valid_loss_rolling_average decreased
+Evaluating agent...
+Saving snapshot...
+Saved
+--------------------------------------
+| AverageDiscountedReturn | 18.7     |
+| AverageReturn           | 21.1     |
+| AvgModelEpochTime       | 0.038    |
+| EnvExecTime             | 0.0961   |
+| Epochs                  | 99       |
+| Eval-AverageReturn      | 162      |
+| Itr                     | 0        |
+| ItrTime                 | 32.8     |
+| MaxReturn               | 58       |
+| MinReturn               | 9        |
+| NumTrajs                | 96       |
+| PolicyExecTime          | 0.0154   |
+| StdReturn               | 10.7     |
+| Time                    | 32.8     |
+| Time-AgentEval          | 28.1     |
+| Time-EnvSampleProc      | 0.00178  |
+| Time-EnvSampling        | 0.123    |
+| Time-ModelFit           | 4.55     |
+| n_timesteps             | 2000     |
+--------------------------------------
+Training finished
