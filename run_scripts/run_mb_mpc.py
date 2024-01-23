@@ -9,11 +9,13 @@ from learning_to_adapt.samplers.model_sample_processor import ModelSampleProcess
 from learning_to_adapt.envs import *
 import json
 import os
+import tensorflow as tf
 
 EXP_NAME = 'mb_mpc'
 
 
 def run_experiment(config):
+    tf.reset_default_graph()
     exp_dir = os.getcwd() + '/data/' + EXP_NAME + '/' + config.get('exp_name', '')
     logger.configure(dir=exp_dir, format_strs=['stdout', 'log', 'csv'], snapshot_mode='last')
     json.dump(config, open(exp_dir + '/params.json', 'w'), indent=2, sort_keys=True, cls=ClassEncoder)
@@ -88,7 +90,7 @@ if __name__ == '__main__':
             'initial_random_samples': True,
 
             # Training
-            'n_itr': 15,
+            'n_itr': 1,
             'learning_rate': 1e-3,
             'batch_size': 256,
             'dynamic_model_epochs': 100,
