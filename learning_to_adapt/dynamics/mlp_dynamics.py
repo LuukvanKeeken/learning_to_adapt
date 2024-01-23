@@ -270,6 +270,19 @@ class MLPDynamicsModel(Serializable):
         self.normalization['delta'] = (np.mean(delta, axis=0), np.std(delta, axis=0))
         self.normalization['act'] = (np.mean(act, axis=0), np.std(act, axis=0))
 
+    def __getstate__(self):
+        state = dict()
+        state['init_args'] = Serializable.__getstate__(self)
+        state['normalization'] = self.normalization
+        state['networks'] = [nn.__getstate__() for nn in self._networks]
+        return state
+
+    def __setstate__(self, state):
+        Serializable.__setstate__(self, state['init_args'])
+        self.normalization = state['normalization']
+        for i in range(len(self._networks)):
+            self._networks[i].__setstate__(state['networks'][i])
+
 
 def normalize(data_array, mean, std):
     return (data_array - mean) / (std + 1e-10)
