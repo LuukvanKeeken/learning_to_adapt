@@ -90,7 +90,7 @@ if __name__ == '__main__':
             'initial_random_samples': True,
 
             # Training
-            'n_itr': 1,
+            'n_itr': 15,
             'learning_rate': 1e-3,
             'batch_size': 256,
             'dynamic_model_epochs': 100,

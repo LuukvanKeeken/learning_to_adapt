@@ -195,9 +195,14 @@ class MLPDynamicsModel(Serializable):
                                       time.time() - t0))
                     break
 
-            if valid_loss_rolling_average_prev < valid_loss_rolling_average or epoch == epochs - 1:
-                logger.log('Stopping Training of Model since its valid_loss_rolling_average decreased')
+            if valid_loss_rolling_average_prev < valid_loss_rolling_average:
+                logger.log('Stopping Training of Model since its valid_loss_rolling_average increased')
                 break
+
+            if epoch == epochs - 1:
+                logger.log('Stopping Training of Model since it reached max epochs')
+                break
+            
             valid_loss_rolling_average_prev = valid_loss_rolling_average
 
         """ ------- Tabular Logging ------- """
