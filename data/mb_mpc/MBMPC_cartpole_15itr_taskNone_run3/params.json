@@ -20,6 +20,7 @@
   "n_candidates": 500,
   "n_itr": 15,
   "n_parallel": 5,
+  "normalize": true,
   "num_cem_iters": 5,
   "num_eval_episodes": 25,
   "num_rollouts": 10,
